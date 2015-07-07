@@ -1,0 +1,177 @@
+---
+title: 'Evolutionary Games: Introduction'
+author: "Sebastian Schreiber"
+date: "July 7, 2015"
+output: pdf_document
+---
+
+# Introduction
+
+Some introductory remarks. 
+
+# Symmetric Two Player Games
+
+You and your partner have committed a major robbery and have been arrested. If convicted of this crime, you will spend $30$ years in prison. Fortunately for you, the police have only sufficient evidence to convict either of you of a much lesser crime, carrying a unlicensed firearm. Convicted of this crime, you would only spend $5$ years in prison. In the hope to extract a confession from one of you, the police have placed you in separate interrogation rooms. In each room, they make the following offer "If you provide evidence against your partner on the robbery but your partner does not provide evidence against you, you will go free and your partner will do the time. If you both provide evidence against each other, you will both do the time but with a reduced sentence of $15$ years."  **What do you do?** 
+
+One approach to answering this question is treat the problem as a *two player* (you and your partner), *symmetric* (you are both offered the same deal) *game*. As you have one of two choices, *defect* on your partner or *cooperate* with your partner, the game is a *two strategy* game. Associated with each pair of strategies played by you and your partner is a *payoff* for each you i.e. how much you gain or lose when this pair of strategies is played. In the case of our prisoner's dilemma, if you and your partner cooperate (i.e. don't rat one another out), each of you "only" lose $5$ years of their life; the payoff to each of you is $-5$. Alternatively, if both of you defect, each you gets convicted of the major crime with a reduced sentence and get payoffs of $-15$. Finally, if one defects and the other cooperates, the defector gets a payoff of $0$ and the cooperator gets a payoff of $-30$. 
+
+We can summarize this information in a *payoff matrix* as follows:
+
+ ||Cooperate|Defect
+---|---------|------
+Cooperate|-5|-30
+Defect|0|-15
+
+where rows correspond to the strategies of the focal player and columns correspond to the strategies of the opponent. 
+
+**If you want to maximize your payoff (i.e. years of prison free life), what is the best strategy if your opponent defects? cooperates?** Clearly, in both cases, the best strategy is to defect. Hence, the dilemma.
+
+We can generalize this game by allowing for arbitrary pay-offs. Say there are two strategies, strategy $1$ and strategy $2$. Let $a_{11}$ be the payoff to an individual playing strategy $1$ against an individual playing strategy $1$, $a_{12}$ be the payoff to an individual playing strategy $1$ against an individual playing strategy $2$, $a_{21}$ be the payoff to an individual playing strategy $2$ against an individual playing strategy $1$, etc. Then the payoff matrix becomes  
+
+ ||Strategy $1$|Strategy $2$
+---|---------|------
+Strategy $1$|$a_{11}$|$a_{12}$
+Strategy $2$|$a_{21}$|$a_{22}$
+
+In the case of the prisonner's dilemma, we had $a_{11}=-5$, $a_{12}=-30$,$a_{21}=0$, and $a_{22}=-15$. In this game, there was a strategy (defect) which always performed better than the other strategy. We call such a strategy, a *dominant strategy*. More generally, strategy $2$ (respectively $1$) is a *dominant* strategy if $a_{21}>a_{11}$ and $a_{22}>a_{12}$ (respectively $a_{21}<a_{11}$ and $a_{22}<a_{12}$).
+
+Do all games have a dominant strategy? Consider  the **hawk-dove** game. 
+
+### the Hawk-Dove game
+
+The hawk dove game was introduced by John Maynard-Smith to study the evolution of aggression in animal contests. About this game, Richard Dawkins wrote (*Selfish Gene* 1976): 
+
+>Survival machines of the same species tend to impinge on each others'
+lives more directly. This is for many reasons. One is that half the
+population of one's own species may be potential mates, and potentially
+hard-working and exploitable parents to one's children. Another reason
+is that members of the same species, being very similar to each other,being machines for preserving genes in the same kind of place, with the
+same kind of way of life, are particularly direct competitors for all the
+resources necessary for life. To a blackbird, a mole may be a competitor,
+but it is not nearly so important a competitor as another blackbird.
+Moles and blackbirds may compete for worms, but blackbirds and
+blackbirds compete with each other for worms and for everything else...The logical policy for a survival machine might therefore seem to be to
+murder its rivals, and then, preferably, to eat them. Although murder
+and cannibalism do occur in nature, they are not as common as a naive
+interpretation of the selfish gene theory might predict. Indeed Konrad
+Lorenz, in On Aggression, stresses the restrained and gentlemanly
+nature of animal fighting. For him the notable thing about animal fights
+is that they are formal tournaments, played according to rules like those
+of boxing or fencing. Animals fight with gloved fists and blunted foils.
+Threat and bluff take the place of deadly earnest. Gestures of surrender
+are recognized by victors, who then refrain from dealing the killing blow
+or bite that our naive theory might predict.
+
+To describe a particular instance of this game, imagine that individuals engage in contests over a limiting resource e.g. a potential mate, food, shelter. Lets say  receiving this resource will increase one's offspring production by $2$ offspring. Individuals can play one of two strategies, hawk or dove. Hawk strategists always escalate the interaction until getting hurt or winning the entire resource. If one gets hurt, offspring production is reduced by $3$. Dove strategists run when there is an escalation and otherwise share the resource. **What is the payoff matrix for this game?**
+
+ ||Dove|Hawk
+---|---------|------
+Dove|$1$|$0$
+Hawk|$2$|$\frac{2-3}{2}=-\frac{1}{2}$
+
+where the payoff from the hawk-hawk interaction corresponds to the average outcome: winning half of the time, losing half of the time. 
+
+**Does this game have a dominant strategy? If not, why not?** Well, if your opponent plays dove, the best strategy is to play hawk. Alternatively, if your opponent plays hawk, the best strategy is to play dove. However, as you won't know what your opponent plays in advance, is there any notion of a "best strategy" for this game? 
+
+To answer this question, we need to introduce a larger class of strategies, so-called *mixed strategies*. Mixed strategies are probabilistic strategies in which one plays on strategy with some likelihood and the other strategy with the complementary likelihood. For example, my opponent might roll a six-sided die to determine their strategy: playing dove if they get $1$, and hawk otherwise. 
+
+The outcome of playing the game once against this opponent is stochastic as it depends on the roll of the die. Suppose I choose to play hawk. We can simulate playing this game against the mixed strategist $n$ times in R as follows. This code returns the average pay-off
+```{r}
+n=100000 # number of times playing as dove
+outcomes=sample(x = 1:6,size = n,replace = TRUE)
+payoffs=(outcomes==1)*1+(outcomes>1)*0
+mean(payoffs)
+```
+**Try running this several times for $n=5,10,100,1000,10000,100000$. What do you notice?** As $n$ gets larger, there is less variation in the mean payoff across runs, and the mean payoff appears to stabilize around the value $1/3$. **What does this $1/6$ represent?** Well, if we play dove many times against our opponent, roughly $1/6$ of time we get a payoff of $1$ and $5/6$ of the time we get a payoff of $0$. Hence, on average, we expect a payoff of 
+\[
+\frac{1}{6}\times 1 + \frac{5}{6}\times 0 = \frac{1}{6}
+\]
+This quantity is called *the expected payoff* of this dove strategy against the $\frac{1}{6}$ strategist. **What is the expected payoff if I play hawk?** Simply,
+\[
+\frac{1}{6}\times 2+ \frac{5}{6}\times\left(-\frac{1}{2}\right)=-\frac{1}{12}
+\]
+as we can demonstrate numerically by playing a million times against the computer
+```{r}
+n=1000000 # number of times playing hawk
+outcomes=sample(x = 1:6,size = n,replace = TRUE)
+payoffs=(outcomes==1)*2+(outcomes>1)*(-1/2)
+mean(payoffs)
+```
+Notice that despite playing $1,000,000$ times, we didn't precisely get $-\frac{1}{12}$. This is to be expected as we didn't play an infinite number of times. How likely our particular outcome was can be estimated using the *Central Limit Theorem* (check it out on Wikipedia)
+
+More generally, if our opponent plays strategy $1$ with probability $x$ and strategy $2$ with probability $1-x$, then my expected payoff playing as straetgy $1$ is 
+\[
+p_1(x)=x a_{11}+(1-x)a_{12}
+\]
+and my expected payoff playing as strategy $2$ is 
+\[
+p_2(x)=x a_{21}+(1-x)a_{22}
+\]
+**What are these in terms of the hawk-dove game?** Simply, 
+\[
+p_1(x)=x\times 1+(1-x)\times 0 = x 
+\]
+and 
+\[
+p_2(x)=x \times 2 + (1-x)\times (-1/2)=\frac{5}{2}x-\frac{1}{2}
+\]
+
+Now suppose, your opponent plays dove with probability $x$ but you play dove with probability $y$. **What is your expected payofff?** When you play dove, you get $p_1(x)$, otherwise $p_2(x)$. As you plays dove a fraction $y$ of the time and hawk otherwise, the expected payoff is 
+\[
+p(x,y)=\mbox{payoff playing $y$ against $x$}=
+yp_1(x)+(1-y)p_2(x)
+\]
+
+To make sure you "get" this definition, **what is expected payoff when you play dove one-half of the time and your opponnent plays dove one-sixth of the time?** We have $p_1(1/6)=1/6$ and $p_2(1/6)=-1/12$ from our earlier calculations. As $y=1/2$, we get
+\[
+p(1/6,1/2)=\frac{1}{2}\times \frac{1}{6}+\frac{1}{2}\frac{-1}{12}=\frac{1}{24}
+\]
+Simulating this interaction $1,000,000$ times supports our calculations
+```{r}
+n=1000000 # number of times playing against the dove
+outcomes1=sample(x = 1:6,size = n,replace = TRUE)
+outcomes2=sample(x = 1:6,size = n,replace = TRUE)
+payoffs=(outcomes1==1&outcomes2<4)*1+(outcomes1==1&outcomes2>3)*2+(outcomes1>1&outcomes2<4)*0+(outcomes1>1&outcomes2>3)*(-0.5)
+mean(payoffs)
+```
+
+OK. So have a bunch of new strategies...but is one of them the "best"?  In his Nobel prize winning work, John Nash introduced a concept of a "best" strategy and showed such a strategy always exists for finite player, finite strategy games. (<span style="color:blue">Show clips from "A Beautiful Mind"</span>)
+
+**Definition** A strategy $x$ is a *Nash equilibrium* if $p(x,x)\ge p(x,y)$ for all $y$ in $[0,1]$. In words, your opponent's strategy is a Nash equilibrium if you can not get a larger payoff playing any other strategy. 
+
+How can we find such a strategy? Notice that  $p(x,y)$ is a linear function of $y$. Hence, if $0<x<1$ is a Nash equilibrium, then $p(x,y)$ as a function $y$ must be constant else either $x<y$ or $x>y$ yields a higher payoff $p(x,y)$ than $p(x,x)$. But, this is only possible if $p_1(x)=p_2(x)$. Thus we have shown *A mixed strategy $0<x<1$ is a Nash equilibrium if and only if $p_1(x)=p_2(x)$.* Alternatively,  a "pure" strategy $x=0$ or $x=1$ is a Nash equilibrium if playing the other strategy against it doesn't lead to a higher payoff. **Check this yourself!**
+
+**What are the Nash equilibria for the Hawk-Game?** We have already seen that the pure strategies are not Nash equilibria (i.e. playing the other strategy leads to a higher payoff). Any mixed Nash equilibrium must satisfy $p_1(x)=p_2(x)$ which yields $x=(5/2)x-1/2$ i.e. $x=1/3$. Playing hawk one-third of the time yields an unbeatable strategy. The expected payoff when both players play this strategy is $p_1(1/3)=1/3$. 
+
+
+## Evolution of cooperation and the TFT strategy
+
+Lets considered a repeated version of the prisonner's dilemma. Assume that individuals can either cooperate or defect. You receive a benefit $B$ when you opponent cooperates with you and pay a cost $C$ for coopearting with your opponent. Defectors only receive the benefit and pay no cost. We have the following payoff matrix
+
+||Cooperate|Defect
+---|---------|------
+Cooperate|B-C|-C
+Defect|B|0
+
+This leads to a prisonner's dilemma where it is always best to defect. But lets suppose the game is iterated $n$ between pairs of individuals, and there are two strategies: tit-for-tat and always defect. The defector always fails to cooperator. The tit-for-tatter always starts with cooperating but then plays what their opponent played in the prior round of the game. **How does the pay-off matrix change?**
+
+||Tit for Tat |Defect
+---|---------|------
+Tit for Tat|n(B-C)|-C
+Defect|B|0
+
+**Under what conditions is there no dominant strategy?** Since defecting is the best strategy against a defector, we need TFT is the best strategy against itself. This requires $n(B-C)>B$ or equivalently
+\[
+\frac{n-1}{n}B>C
+\]. In particular, need $B>C$ and $n$ to be sufficiently larger than $1$. Suppose this condition holds. **Is there a Nash equilibrium?** Each of the pure strategies is a Nash equilibrium. Hence cooperation is possible provided condition above holds. <span style="color:blue"> Discuss vampire bats example from Nature </span>
+
+**What about mixed Nash equilibria?** A mixed Nash equilibrium must satisfy
+\[
+\begin{aligned}
+xn(B-C)+(1-x)(-C)&=xB\\
+x(n-1)(B-C)&=C\\
+x=&\frac{C}{(n-1)(B-C)}
+\end{aligned}
+\]
+Hence, they exist as well. So what does this mean? Which strategy is the "best" strategy? <span style="color:blue"> To be continued!!! </span>
+
