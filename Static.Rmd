@@ -35,7 +35,7 @@ We can generalize this game by allowing for arbitrary pay-offs. Say there are tw
 Strategy $1$|$a_{11}$|$a_{12}$
 Strategy $2$|$a_{21}$|$a_{22}$
 
-In the case of the prisonner's dilemma, we had $a_{11}=-5$, $a_{12}=-30$,$a_{21}=0$, and $a_{22}=-15$. In this game, there was a strategy (defect) which always performed better than the other strategy. We call such a strategy, a *dominant strategy*. More generally, strategy $2$ (respectively $1$) is a *dominant* strategy if $a_{21}>a_{11}$ and $a_{22}>a_{12}$ (respectively $a_{21}<a_{11}$ and $a_{22}<a_{12}$).
+In the case of the prisoner's dilemma, we had $a_{11}=-5$, $a_{12}=-30$,$a_{21}=0$, and $a_{22}=-15$. In this game, there was a strategy (defect) which always performed better than the other strategy. We call such a strategy, a *dominant strategy*. More generally, strategy $2$ (respectively $1$) is a *dominant* strategy if $a_{21}>a_{11}$ and $a_{22}>a_{12}$ (respectively $a_{21}<a_{11}$ and $a_{22}<a_{12}$).
 
 Do all games have a dominant strategy? Consider  the **hawk-dove** game. 
 
@@ -101,7 +101,7 @@ mean(payoffs)
 ```
 Notice that despite playing $1,000,000$ times, we didn't precisely get $-\frac{1}{12}$. This is to be expected as we didn't play an infinite number of times. How likely our particular outcome was can be estimated using the *Central Limit Theorem* (check it out on Wikipedia)
 
-More generally, if our opponent plays strategy $1$ with probability $x$ and strategy $2$ with probability $1-x$, then my expected payoff playing as straetgy $1$ is 
+More generally, if our opponent plays strategy $1$ with probability $x$ and strategy $2$ with probability $1-x$, then my expected payoff playing as strategy $1$ is 
 \[
 p_1(x)=x a_{11}+(1-x)a_{12}
 \]
@@ -148,14 +148,14 @@ How can we find such a strategy? Notice that  $p(x,y)$ is a linear function of $
 
 ## Evolution of cooperation and the TFT strategy
 
-Lets considered a repeated version of the prisonner's dilemma. Assume that individuals can either cooperate or defect. You receive a benefit $B$ when you opponent cooperates with you and pay a cost $C$ for coopearting with your opponent. Defectors only receive the benefit and pay no cost. We have the following payoff matrix
+Lets considered a repeated version of the prisoner's dilemma. Assume that individuals can either cooperate or defect. You receive a benefit $B$ when you opponent cooperates with you and pay a cost $C$ for cooperating with your opponent. Defectors only receive the benefit and pay no cost. We have the following payoff matrix
 
 ||Cooperate|Defect
 ---|---------|------
 Cooperate|B-C|-C
 Defect|B|0
 
-This leads to a prisonner's dilemma where it is always best to defect. But lets suppose the game is iterated $n$ between pairs of individuals, and there are two strategies: tit-for-tat and always defect. The defector always fails to cooperator. The tit-for-tatter always starts with cooperating but then plays what their opponent played in the prior round of the game. **How does the pay-off matrix change?**
+This leads to a prisoner's dilemma where it is always best to defect. But lets suppose the game is iterated $n$ between pairs of individuals, and there are two strategies: tit-for-tat and always defect. The defector always fails to cooperator. The tit-for-tatter always starts with cooperating but then plays what their opponent played in the prior round of the game. **How does the pay-off matrix change?**
 
 ||Tit for Tat |Defect
 ---|---------|------
