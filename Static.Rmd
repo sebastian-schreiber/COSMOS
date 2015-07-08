@@ -193,5 +193,12 @@ x(n-1)(B-C)&=C\\
 x=&\frac{C}{(n-1)(B-C)}
 \end{aligned}
 \]
-Hence, they exist as well. So what does this mean? Which strategy is the "best" strategy? <span style="color:blue"> To be continued!!! </span>
+Hence, they exist as well. So what does this mean? Which strategy may evolve? 
+
+To answer these questions, John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be "invaded" by any other strategy. Formally, their condition states $x$ is an *evolutionarily stable strategy* if either 
+
+1. $p(x,x)>p(x,y)$ OR
+2. $p(x,x)=p(x,y)$ and $p(y,x)>p(y,y)$
+
+for all $y\neq x$. The first condition asserts that in a population of individuals primarily playing strategy $x$, individuals playing strategy $x$ are more than individuals playing any other strategy $y$. The second condition asserts if another strategy has equal fitness, then individuals playing strategy $x$ yields a higher fitness in a population of individuals playing the other strategy. In other words, the frequency of individuals playing strategy $x$ would increase in any population playing a different strategy. 
 

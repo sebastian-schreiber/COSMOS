@@ -283,7 +283,13 @@ xn(B-C)+(1-x)(-C)&amp;=xB\\
 x(n-1)(B-C)&amp;=C\\
 x=&amp;\frac{C}{(n-1)(B-C)}
 \end{aligned}
-\]</span> Hence, they exist as well. So what does this mean? Which strategy is the “best” strategy? <span style="color:blue"> To be continued!!! </span></p>
+\]</span> Hence, they exist as well. So what does this mean? Which strategy may evolve?</p>
+<p>To answer these questions, John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be “invaded” by any other strategy. Formally, their condition states <span class="math">\(x\)</span> is an <em>evolutionarily stable strategy</em> if either</p>
+<ol style="list-style-type: decimal">
+<li><span class="math">\(p(x,x)&gt;p(x,y)\)</span> OR</li>
+<li><span class="math">\(p(x,x)=p(x,y)\)</span> and <span class="math">\(p(y,x)&gt;p(y,y)\)</span></li>
+</ol>
+<p>for all <span class="math">\(y\neq x\)</span>. The first condition asserts that in a population of individuals primarily playing strategy <span class="math">\(x\)</span>, individuals playing strategy <span class="math">\(x\)</span> are more than individuals playing any other strategy <span class="math">\(y\)</span>. The second condition asserts if another strategy has equal fitness, then individuals playing strategy <span class="math">\(x\)</span> yields a higher fitness in a population of individuals playing the other strategy. In other words, the frequency of individuals playing strategy <span class="math">\(x\)</span> would increase in any population playing a different strategy.</p>
 </div>
 </div>
 
