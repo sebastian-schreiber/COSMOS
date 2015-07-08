@@ -84,7 +84,7 @@ outcomes=sample(x = 1:6,size = n,replace = TRUE)
 payoffs=(outcomes==1)*1+(outcomes>1)*0
 mean(payoffs)
 ```
-**Try running this several times for $n=5,10,100,1000,10000,100000$. What do you notice?** As $n$ gets larger, there is less variation in the mean payoff across runs, and the mean payoff appears to stabilize around the value $1/3$. **What does this $1/6$ represent?** Well, if we play dove many times against our opponent, roughly $1/6$ of time we get a payoff of $1$ and $5/6$ of the time we get a payoff of $0$. Hence, on average, we expect a payoff of 
+**Try running this several times for $n=5,10,100,1000,10000,100000$. What do you notice?** As $n$ gets larger, there is less variation in the mean payoff across runs, and the mean payoff appears to stabilize around the value $1/6$. **What does this $1/6$ represent?** Well, if we play dove many times against our opponent, roughly $1/6$ of time we get a payoff of $1$ and $5/6$ of the time we get a payoff of $0$. Hence, on average, we expect a payoff of 
 \[
 \frac{1}{6}\times 1 + \frac{5}{6}\times 0 = \frac{1}{6}
 \]
