@@ -1,15 +1,17 @@
 ---
-title: 'Evolutionary Games: Introduction'
+title: 'Evolutionary Games'
 author: "Sebastian Schreiber"
 date: "July 7, 2015"
-output: pdf_document
+output: html_document
 ---
 
 # Introduction
 
-Some introductory remarks. 
+These notes are the basis of the lectures that I give as part of the "Mathematical Modeling of Biological Systems" Cluster of the <a href="cosmos.ucdavis.edu">UC Davis COSMOS program.</a> This cluster is currently run by Tim Lewis, Bob Guy, and myself. My lectures cover evolutionary game theory and disease dynamics. 
 
-# Symmetric Two Player Games
+
+
+# Static Two Player Games
 
 You and your partner have committed a major robbery and have been arrested. If convicted of this crime, you will spend $30$ years in prison. Fortunately for you, the police have only sufficient evidence to convict either of you of a much lesser crime, carrying a unlicensed firearm. Convicted of this crime, you would only spend $5$ years in prison. In the hope to extract a confession from one of you, the police have placed you in separate interrogation rooms. In each room, they make the following offer "If you provide evidence against your partner on the robbery but your partner does not provide evidence against you, you will go free and your partner will do the time. If you both provide evidence against each other, you will both do the time but with a reduced sentence of $15$ years."  **What do you do?** 
 
@@ -91,7 +93,7 @@ This quantity is called *the expected payoff* of this dove strategy against the 
 \frac{1}{6}\times 2+ \frac{5}{6}\times\left(-\frac{1}{2}\right)=-\frac{1}{12}
 \]
 as we can demonstrate numerically by playing a million times against the computer
-```{r}
+```{r} 
 n=1000000 # number of times playing hawk
 outcomes=sample(x = 1:6,size = n,replace = TRUE)
 payoffs=(outcomes==1)*2+(outcomes>1)*(-1/2)
@@ -135,7 +137,7 @@ payoffs=(outcomes1==1&outcomes2<4)*1+(outcomes1==1&outcomes2>3)*2+(outcomes1>1&o
 mean(payoffs)
 ```
 
-OK. So have a bunch of new strategies...but is one of them the "best"?  In his Nobel prize winning work, John Nash introduced a concept of a "best" strategy and showed such a strategy always exists for finite player, finite strategy games. (<span style="color:blue">Show clips from "A Beautiful Mind"</span>)
+OK. So have a bunch of new strategies...but is one of them the "best"?  In his Nobel prize winning work, John Nash introduced a concept of a "best" strategy and showed such a strategy always exists for finite player, finite strategy games. (<span style="color:blue">Show clips from <a href="https://en.wikipedia.org/wiki/A_Beautiful_Mind_(film)">A Beautiful Mind</a></span>)
 
 **Definition** A strategy $x$ is a *Nash equilibrium* if $p(x,x)\ge p(x,y)$ for all $y$ in $[0,1]$. In words, your opponent's strategy is a Nash equilibrium if you can not get a larger payoff playing any other strategy. 
 
