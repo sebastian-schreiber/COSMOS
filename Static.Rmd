@@ -69,7 +69,8 @@ is that they are formal tournaments, played according to rules like those
 of boxing or fencing. Animals fight with gloved fists and blunted foils.
 Threat and bluff take the place of deadly earnest. Gestures of surrender
 are recognized by victors, who then refrain from dealing the killing blow
-or bite that our naive theory might predict.
+or bite that our naive theory might predict...Why is it that animals do not go all out to
+kill rival members of their species at every possible opportunity?
 
 To resolve this apparent paradox, we consider describe a particular instance of Maynard Smith's hawk-dove game. In this game, imagine that individuals engage in contests over a limiting resource e.g. a potential mate, food, shelter. Lets say  receiving this resource will increase one's offspring production by $2$ offspring. Individuals can play one of two strategies, hawk or dove. Hawk strategists always escalate the interaction until getting hurt or winning the entire resource. If one gets hurt, offspring production is reduced by $3$. Dove strategists run when there is an escalation and otherwise share the resource. **What is the payoff matrix for this game?**
 
