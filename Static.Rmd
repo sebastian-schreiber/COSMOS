@@ -71,7 +71,7 @@ Threat and bluff take the place of deadly earnest. Gestures of surrender
 are recognized by victors, who then refrain from dealing the killing blow
 or bite that our naive theory might predict.
 
-To describe a particular instance of this game, imagine that individuals engage in contests over a limiting resource e.g. a potential mate, food, shelter. Lets say  receiving this resource will increase one's offspring production by $2$ offspring. Individuals can play one of two strategies, hawk or dove. Hawk strategists always escalate the interaction until getting hurt or winning the entire resource. If one gets hurt, offspring production is reduced by $3$. Dove strategists run when there is an escalation and otherwise share the resource. **What is the payoff matrix for this game?**
+To resolve this apparent paradox, we consider describe a particular instance of Maynard Smith's hawk-dove game. In this game, imagine that individuals engage in contests over a limiting resource e.g. a potential mate, food, shelter. Lets say  receiving this resource will increase one's offspring production by $2$ offspring. Individuals can play one of two strategies, hawk or dove. Hawk strategists always escalate the interaction until getting hurt or winning the entire resource. If one gets hurt, offspring production is reduced by $3$. Dove strategists run when there is an escalation and otherwise share the resource. **What is the payoff matrix for this game?**
 
  ||Dove|Hawk
 ---|---------|------
