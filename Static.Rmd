@@ -212,7 +212,7 @@ x=&\frac{C}{(n-1)(B-C)}
 \]
 Hence, they exist as well. So what does this mean? Which strategy may evolve? 
 
-
+**SKIPPED THE DEFINITION BELOW - Needs to be updated**
 To answer these questions, John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be "invaded" by any other strategy. Formally, their condition states $x$ is an *evolutionarily stable strategy* if either 
 
 1. $p(x,x)>p(x,y)$ OR
@@ -224,9 +224,55 @@ To explore this definition, lets work through two examples with the hawk-dove ga
 
 # The replicator dynamic
 
-Thusfar, we have only considered static games, but evolution is, by definition, a dynamic process in which frequencies of genotypes change over time. To account for this dynamic, we will model the dynamics of two competing genotypes. To keep things simple, we assume asexual reproduction whereby like begets like. Lets call these genotypes, genotype $1$ and genotype $2$. These genotypes live in an environement which can support only $N$ individuals (Here $N$ is XXL). 
+Thusfar, we have only considered static games, but evolution is, by definition, a dynamic process in which frequencies of genotypes change over time. To account for this dynamic, we will model the dynamics of two competing genotypes. 
 
+To keep things simple, we assume asexual reproduction whereby like begets like. Lets call these genotypes, genotype $1$ and genotype $2$. These genotypes live in an environement which can support only $N$ individuals (Here $N$ is XXL). Let $x_t$ be the frequency of genotype $1$ at time $t$. Let $p_i(x_t)$ be the number of offspring produced by genotype $i$ at time $t$. As the notation suggests, these $p_i$ may correspond to the payoff functions from the static models where the opponent is a randomly choosen individual from the population. 
 
+To define the population dynamic, we assume that each time step (e.g. year) a fraction $\delta$ of individuals die, thereby freeing up terrorities for $\delta N$ individual offspring to settle. Each offspring (independent of genotype) is equally likely to get a freed up territory. **Armed with this information, what might the update rule be for $x_t$?**
 
+Well, a bit of thought (*will add more later*) reveals
+\[
+x_{t+1}=(1-\delta) x_t + \delta \frac{p_1(x_t)x_t}{p_1(x_t)x_t+p_2(x_t)(1-x_t)}
+\]
+Here is some R code to simulate this model 
+```{r}
+replicator2=function(p1,p2,delta=0.001,x0=seq(0,1,length=15),T=5000){
+  n=length(x0)
+	x=matrix(0,T+1,n)
+	x[1,]=x0
+	for(t in 1:T)x[t+1,]=(1-delta)*x[t,]+delta*p1(x[t,])*x[t,]/(p1(x[t,])*x[t,]+p2(x[t,])*(1-x[t,]))
+	par(cex.lab=1.5,cex.axis=1.5)
+matplot(x,type="l",lty=1,lwd=2,xlab="time",ylab="frequency")
+	}
+```
+The input for the replicator2 function is the p1 and p2 functions, the death rate, and the initial frequencies of interest. 
 
+Lets try out this function for hawk-dove game with 
+$p_1(x)=1+x$ and $p_2(x)=1+(5x-1)/2$ (Note: I added $1$ as the baseline payoff to insure no negative numbers).
+```{r}
+p1=function(x)1+x
+p2=function(x)1+(5*x-1)/2
+replicator2(p1,p2,delta=0.01,T=2000)
+```
+
+This simulation suggests that all initial conditions involving both genotypes approaches a value of $x=1/3$. In other words, in the long-term, one-third of the population will be dove genotypes and two-thirds will be hawk genotypes. Is it a coincidence that we are getting $1/3$ here? Certainly not! **To see why, determine what the equilibria of the replicator must satisfy.** A little thought reveals that $0$ and $1$ are always equilibria (i.e. the no cats, no kittens principle). Furthermore, $0<x<1$ is an equilibrium if and only if $p_1(x)=p_2(x)$. Namely, any polymorphic equilibrium corresponds to a Nash equilibrium! 
+
+In the hawk-dove game, we can see that the Nash equilibrium $x=1/3$ is stable for the replicator dynamics. This need not be true. To see why, lets consider the modified prisoner's dilemma model with $n=10$, $B=5$, $C=1$. In this case, $0$, $1$, and 
+
+```{r}
+C=1
+B=5
+n=2
+C/((n-1)*(B-C))
+```
+
+are Nash equilibria. **What do you notice when you run the dynamics for this example?**
+
+```{r}
+p1=function(x)1+x*(n*(B-C))+(1-x)*(-C)
+p2=function(x)1+x*B+(1-x)*0
+replicator2(p1,p2,delta=0.01,T=2000)
+```
+
+The Nash equilibria $0,1$ are stable, but the Nash equilibrium of $1/3$ is unstable. Hence, there is convergence to the all cooperation state only if there are initially sufficiently many cooperators in the population. 
 
