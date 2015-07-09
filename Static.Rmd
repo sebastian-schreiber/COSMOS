@@ -212,10 +212,21 @@ x=&\frac{C}{(n-1)(B-C)}
 \]
 Hence, they exist as well. So what does this mean? Which strategy may evolve? 
 
+
 To answer these questions, John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be "invaded" by any other strategy. Formally, their condition states $x$ is an *evolutionarily stable strategy* if either 
 
 1. $p(x,x)>p(x,y)$ OR
 2. $p(x,x)=p(x,y)$ and $p(y,x)>p(y,y)$
 
 for all $y\neq x$. The first condition asserts that in a population of individuals primarily playing strategy $x$, individuals playing strategy $x$ are more than individuals playing any other strategy $y$. The second condition asserts if another strategy has equal fitness, then individuals playing strategy $x$ yields a higher fitness in a population of individuals playing the other strategy. In other words, the frequency of individuals playing strategy $x$ would increase in any population playing a different strategy. 
+
+To explore this definition, lets work through two examples with the hawk-dove game and the modified prisoner's dilemma. For the hawk-dove game, we found that $x=1/3$ is a Nash equilibrium satisfying $p(x,x)=p(x,y)$ for all $y$ in $[0,1]$. As this corresponds to the second case of the ESS definition, we also need to verify whether $p(y,1/3)>p(y,y)$ for all $y\neq 1/3$. *To be added!*
+
+# The replicator dynamic
+
+Thusfar, we have only considered static games, but evolution is, by definition, a dynamic process in which frequencies of genotypes change over time. To account for this dynamic, we will model the dynamics of two competing genotypes. To keep things simple, we assume asexual reproduction whereby like begets like. Lets call these genotypes, genotype $1$ and genotype $2$. These genotypes live in an environement which can support only $N$ individuals (Here $N$ is XXL). 
+
+
+
+
 
