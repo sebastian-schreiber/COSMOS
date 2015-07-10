@@ -212,7 +212,7 @@ x=&\frac{C}{(n-1)(B-C)}
 \]
 Hence, they exist as well. So what does this mean? Which strategy may evolve? 
 
-**SKIPPED THE DEFINITION BELOW - Needs to be updated**
+**SKIPPED THE DEFINITION BELOW as the concept of stability is clearer in the dynamic section.**
 To answer these questions, John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be "invaded" by any other strategy. Formally, their condition states $x$ is an *evolutionarily stable strategy* if either 
 
 1. $p(x,x)>p(x,y)$ OR
@@ -282,7 +282,9 @@ The Nash equilibria $0,1$ are stable, but the Nash equilibrium of $1/3$ is unsta
 
 **Try this out for the hawk-dove game and modified prisoner's dilemma, and verify that the simulations are doing the right thing :)** In the hawk-dove game, we have $p_1(0)=1>1/2=p_2(0)$ and $p_2(1)=3>2=p_1(1)$. Hence, the equilibrium $x=1/3$ is stable, as we observed in the numerics. In the modified prisonner's dilemma, $p_1(0)=0<1=p_2(0)$. Hence, the equilibrium $x=1/4$ is unstable, as we observed in the numerics.  
 
-What about more than $2$ strategies??
+# Three or more genotypes
+
+What about more than $2$ genotypes? Everything generalizes quite naturally. Before stating the general forms of the static games and replicator dynamics, lets consider the rock, paper, scissor game of childhood fame. This game is characterize by an intransitivity: scissor beats paper, paper beats rock, and rock beats scissor. Remarkably, this game shows up in a variety of natural populations. <span style="color:blue"> Discuss and rock, paper, scissor in *E.coli* populations and side-blotched lizards.</span> 
 
 ```{r}
 replicator3=function(p1,p2,p3,delta=0.01,T=15000,x0,y0,type=1){
