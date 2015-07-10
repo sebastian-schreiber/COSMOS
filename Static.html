@@ -344,6 +344,40 @@ replicator2(p1,p2,delta=0.01,T=2000)</code></pre>
 <p>The Nash equilibria <span class="math">\(0,1\)</span> are stable, but the Nash equilibrium of <span class="math">\(1/3\)</span> is unstable. Hence, there is convergence to the all cooperation state only if there are initially sufficiently many cooperators in the population.</p>
 <p><em>How might one check for stability?</em> Provided that <span class="math">\(\delta&gt;0\)</span> is sufficiently small, it is fairly simple. Say <span class="math">\(0&lt;x^*&lt;1\)</span> is a Nash equilibrium. This equilibrium will be stable for the dynamic provided that the frequency of strategy <span class="math">\(1\)</span> is increasing when it is slightly slightly below <span class="math">\(x^*\)</span>, and decreasing when it is slightly above <span class="math">\(x^*\)</span>. In equations <strong>(Check this for yourselves!!)</strong>, <span class="math">\(p_1(x)&gt;p_2(x)\)</span> for <span class="math">\(x\)</span> slightly smaller than <span class="math">\(x^*\)</span> and <span class="math">\(p_1(x)&lt;p_2(x)\)</span> for <span class="math">\(x\)</span> slightly larger than <span class="math">\(x^*\)</span>. Things get even simpler for the <span class="math">\(p_i(x)\)</span> functions that we have been using as they are linear in <span class="math">\(x\)</span>. Hence <strong>(check this for yourselves!)</strong>, the stability condition reduces to <span class="math">\(p_1(0)&gt;p_2(0)\)</span> (strategy <span class="math">\(1\)</span> increases when rare) and <span class="math">\(p_2(1)&gt;p_1(1)\)</span> (strategy <span class="math">\(2\)</span> increases when rare). Conversely, if any of the inequalities are reversed, <span class="math">\(x^*\)</span> is unstable.</p>
 <p><strong>Try this out for the hawk-dove game and modified prisoner’s dilemma, and verify that the simulations are doing the right thing :)</strong> In the hawk-dove game, we have <span class="math">\(p_1(0)=1&gt;1/2=p_2(0)\)</span> and <span class="math">\(p_2(1)=3&gt;2=p_1(1)\)</span>. Hence, the equilibrium <span class="math">\(x=1/3\)</span> is stable, as we observed in the numerics. In the modified prisonner’s dilemma, <span class="math">\(p_1(0)=0&lt;1=p_2(0)\)</span>. Hence, the equilibrium <span class="math">\(x=1/4\)</span> is unstable, as we observed in the numerics.</p>
+<p>What about more than <span class="math">\(2\)</span> strategies??</p>
+<pre class="r"><code>replicator3=function(p1,p2,p3,delta=0.01,T=15000,x0,y0,type=1){
+  n=length(x0)
+    x=matrix(0,T+1,n)
+    y=matrix(0,T+1,n)
+    x[1,]=x0
+    y[1,]=y0
+    for(i in 1:n){
+    for(t in 1:T){
+        xt=x[t,i]
+        yt=y[t,i]
+        temp1=p1(xt,yt)*xt
+        temp2=p2(xt,yt)*yt
+        temp3=p3(xt,yt)*(1-xt-yt)
+        temp=temp1+temp2+temp3
+        x[t+1,i]=(1-delta)*xt+delta*temp1/temp
+        y[t+1,i]=(1-delta)*yt+delta*temp2/temp
+    }
+    }
+    if(type==1){
+        x.new=x+y/2
+        y.new=y/1.14142
+        par(cex.lab=1.5,cex.axis=1.5)
+    matplot(x.new,y.new,type=&quot;l&quot;,lty=1,lwd=2,xlab=&quot;&quot;,ylab=&quot;&quot;,xaxt=&quot;n&quot;,yaxt=&quot;n&quot;,bty=&quot;n&quot;,xlim=c(-0.1,1.1),ylim=c(-0.1,1/1.14142+0.1))
+        lines(c(0,1,1/2,0),c(0,0,1/1.14142,0),lwd=3)
+        text(0,-0.05,&quot;strategy 3&quot;,cex=1.25) 
+        text(1,-0.05,&quot;strategy 1&quot;,cex=1.25) 
+        text(0.5,1/1.14142+0.05,&quot;strategy 2&quot;,cex=1.25)
+        }
+    if(type==2){
+            matplot(x,type=&quot;l&quot;,lwd=2,xlab=&quot;time&quot;,ylab=&quot;frequencies&quot;,ylim=c(0,1),col=&quot;blue&quot;)
+        matplot(y,type=&quot;l&quot;,lwd=2,add=TRUE,col=&quot;red&quot;)
+        matplot(1-x-y,type=&quot;l&quot;,lwd=2,add=TRUE,col=&quot;green&quot;)} 
+}</code></pre>
 </div>
 
 

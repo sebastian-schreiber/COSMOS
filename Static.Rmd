@@ -282,4 +282,40 @@ The Nash equilibria $0,1$ are stable, but the Nash equilibrium of $1/3$ is unsta
 
 **Try this out for the hawk-dove game and modified prisoner's dilemma, and verify that the simulations are doing the right thing :)** In the hawk-dove game, we have $p_1(0)=1>1/2=p_2(0)$ and $p_2(1)=3>2=p_1(1)$. Hence, the equilibrium $x=1/3$ is stable, as we observed in the numerics. In the modified prisonner's dilemma, $p_1(0)=0<1=p_2(0)$. Hence, the equilibrium $x=1/4$ is unstable, as we observed in the numerics.  
 
+What about more than $2$ strategies??
 
+```{r}
+replicator3=function(p1,p2,p3,delta=0.01,T=15000,x0,y0,type=1){
+  n=length(x0)
+	x=matrix(0,T+1,n)
+	y=matrix(0,T+1,n)
+	x[1,]=x0
+	y[1,]=y0
+	for(i in 1:n){
+	for(t in 1:T){
+		xt=x[t,i]
+		yt=y[t,i]
+		temp1=p1(xt,yt)*xt
+		temp2=p2(xt,yt)*yt
+		temp3=p3(xt,yt)*(1-xt-yt)
+		temp=temp1+temp2+temp3
+		x[t+1,i]=(1-delta)*xt+delta*temp1/temp
+		y[t+1,i]=(1-delta)*yt+delta*temp2/temp
+	}
+	}
+	if(type==1){
+		x.new=x+y/2
+		y.new=y/1.14142
+		par(cex.lab=1.5,cex.axis=1.5)
+	matplot(x.new,y.new,type="l",lty=1,lwd=2,xlab="",ylab="",xaxt="n",yaxt="n",bty="n",xlim=c(-0.1,1.1),ylim=c(-0.1,1/1.14142+0.1))
+		lines(c(0,1,1/2,0),c(0,0,1/1.14142,0),lwd=3)
+		text(0,-0.05,"strategy 3",cex=1.25)	
+		text(1,-0.05,"strategy 1",cex=1.25)	
+		text(0.5,1/1.14142+0.05,"strategy 2",cex=1.25)
+		}
+	if(type==2){
+			matplot(x,type="l",lwd=2,xlab="time",ylab="frequencies",ylim=c(0,1),col="blue")
+		matplot(y,type="l",lwd=2,add=TRUE,col="red")
+		matplot(1-x-y,type="l",lwd=2,add=TRUE,col="green")}	
+}
+```
