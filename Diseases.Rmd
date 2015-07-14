@@ -1,0 +1,62 @@
+---
+title: "Diseases"
+author: "Sebastian Schreiber"
+date: "July 14, 2015"
+output: html_document
+---
+
+These notes are the basis of the lectures that I give as part of the "Mathematical Modeling of Biological Systems" Cluster of the <a href="cosmos.ucdavis.edu">UC Davis COSMOS program.</a> This cluster is currently run by Tim Lewis, Bob Guy, and myself. My lectures cover evolutionary game theory and disease dynamics. 
+
+# Introduction
+
+
+
+# $R_0$ and controlling outbreaks
+
+
+## Herd immunity
+
+
+## Ebola
+
+
+## Dengue
+
+
+# SIR model
+
+To describe the *dynamics* of a disease as it propagates through a popuation, we begin with a basic discrete time model where individuals are either susceptible (S), infected and infectious (I), or removed (R) from the susceptible and infectious pool of individuals. Removal may correspond to individuals recovering and becoming immune to reinfection, or individuals die. In either case, these individuals are not contributing the disease dynamics. 
+
+Let $S_t$, $I_t$, and $R_t$ denote the number of susceptible, infected and removed individuals at time $t$ e.g. day $t$. We will focus on diseases where the population size (including possibly dead individuals) is relatively constant. In particular, we will (for now) ignore births and deaths due to other sources of mortality. This assumption is reasonable when we are interested in the outbreak dynamics of a disease with short infectious period relative to a human (or more generally host) lifespan. Let $N=S_t+I_t+R_t$ be the total population size. 
+
+Assume that each susceptible individual encounters infected individuals at a rate $c$ (the contact rate) and $p$ is the probability there is a sucessful transmission event following an encounter. Under this assumption, one can show (see challenge exercise below) that the probability of a suscpetible individual "escaping" infection from time $t$ to $t+1$ is $\exp(-pc I_t)$. Lets also assume that a fraction $\gamma$ of infected individuals are removed at the end of each day. **Under this set of assumptions, write down a model of the SIR dynamics** You should get the following (**be sure you understand why!!**)
+\[
+\begin{aligned}
+S_{t+1}&=S_t \exp(-pc I_t)\\
+I_{t+1}&=S_t(1-\exp(-pc I_t))+(1-\gamma)I_t\\
+R_{t+1}&=R_t+\gamma I_t
+\end{aligned}
+\]
+Before we try to analyze this model by relating it to our $R_0$ work, lets try simulating it!. The following code is a simulator that plots the SIR dynamics as a function of time $t$. 
+```{r}
+SIR=function(p,c,gamma,N,I0,T){
+ S=matrix(NA,T,length(I0))
+ S[1,]=N-I0
+ I=matrix(NA,T,length(I0))
+ I[1,]=I0
+ for(t in 1:(T-1)){
+   S[t+1,]=S[t,]*exp(-p*c*I[t,])
+   I[t+1,]=S[t,]*(1-exp(-p*c*I[t,]))+(1-gamma)*I[t,] 
+ }
+ R=N-S-I
+ par(cex.axis=1.5,cex.lab=1.5)
+ matplot(S,type="l",col="green",xlab="days",bty="n",ylab="abundances",lwd=2)
+ matplot(I,type="l",col="red",add=TRUE,lwd=2)
+ matplot(R,type="l",col="black",add=TRUE,lwd=2)
+ legend("right",c("S","I","R"),lty=1,col=c("green","red","black"),bty="n",cex=1.5,lwd=2)
+}
+```
+
+Let runs this code using parameters consistent with measles. As measles lasts about $10$ days, we can set $\gamma=1/10$ i.e. there is a $1/10$th chance per day that an infected individual recovers and, consequently, on average an individual remains infected for $10$ days.  
+
+
