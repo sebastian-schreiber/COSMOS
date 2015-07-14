@@ -176,6 +176,17 @@ Hawk|$V$|$\frac{V-C}{2}$
 1. Underwhat conditions is there a pure Nash equilibrium? 
 2. When does the Nash equilibrium correspond to less aggressive behavior? 
 
+**Answers:** 
+
+1. If $V\ge C$, then hawk is a dominant strategy. In particular, pure hawk is a Nash equilibrium. If $V<C$, then there is no pure Nash equilibrium. In particular, being purely dove is never the "best" strategy. 
+
+2. If $C>V$, then there is only one Nash equilibrium given by 
+\[
+1-\frac{V}{C}
+\]
+Hence, the Nash equilibrium corresponds to less aggressive behavior for larger cost to victory ratios. 
+
+
 ## Evolution of cooperation and the TFT strategy
 
 >Cooperation in organisms, whether bacteria or primates, has been a difficulty for evolutionary theory since Darwin. On the assumption that interactions between pairs of individuals occur on a probabilistic basis, a model is developed based on the concept of an evolutionarily stable strategy in the context of the Prisoner's Dilemma game. Deductions from the model, and the results of a computer tournaments how how cooperation based on reciprocity can get started in an asocial world, can thrive while interacting with a wide range of other strategies, and can resist invasion once fully established. Potential applications include specific aspects of territoriality, mating, and disease. - Robert Axelrod and Bill Hamilton (1981) *Science*
@@ -200,7 +211,7 @@ Defect|B|0
 \frac{n-1}{n}B>C
 \]. In particular, need $B>C$ and $n$ to be sufficiently larger than $1$. Suppose this condition holds. **Is there a Nash equilibrium?** Each of the pure strategies is a Nash equilibrium. Hence cooperation is possible provided condition above holds. 
 
-<span style="color:blue"> Discuss vampire bat work of Gerald Wilkinson (1984) *Nature* </span>
+<span style="color:blue"> Discuss vampire bat work of Gerald Wilkinson (1984) in *Nature* </span>
 
 **What about mixed Nash equilibria?** A mixed Nash equilibrium must satisfy
 \[
@@ -210,10 +221,10 @@ x(n-1)(B-C)&=C\\
 x=&\frac{C}{(n-1)(B-C)}
 \end{aligned}
 \]
-Hence, they exist as well. So what does this mean? Which strategy may evolve? 
+Hence, they exist as well. So what does this mean? Which strategy may evolve? To answer these questions, we make the games dynamic. 
 
 **SKIPPED THE DEFINITION BELOW as the concept of stability is clearer in the dynamic section.**
-To answer these questions, John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be "invaded" by any other strategy. Formally, their condition states $x$ is an *evolutionarily stable strategy* if either 
+John Maynard-Smith and George Price introduced the concept of an evolutionary stable strategy. Intuitively, an evolutionary stable strategy is a strategy when played by most of the population can not be "invaded" by any other strategy. Formally, their condition states $x$ is an *evolutionarily stable strategy* if either 
 
 1. $p(x,x)>p(x,y)$ OR
 2. $p(x,x)=p(x,y)$ and $p(y,x)>p(y,y)$
