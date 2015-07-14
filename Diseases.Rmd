@@ -9,54 +9,97 @@ These notes are the basis of the lectures that I give as part of the "Mathematic
 
 # Introduction
 
+**See lecture slides**
+
+## $R_0$ and controlling outbreaks
 
 
-# $R_0$ and controlling outbreaks
-
+**See lecture slides**
 
 ## Herd immunity
 
 
+**See lecture slides**
+
 ## Ebola
+
+The Ebola virus causes an acute, serious illness which is often fatal if untreated. Ebola virus disease (EVD) first appeared in 1976 in $2$ simultaneous outbreaks in Sudan and the Democratic Republic of Congo.  The latter occurred in a village near the Ebola River, from which the disease takes its name. Ebola spreads by direct contact with body fluids, such as blood, of an infected individual. Human mortality rate ranges between $25$ and $90$ percent. According the World Health Organization (April 2015), 
+there are "currently no licensed Ebola vaccines but two candidates are undergoing evaluation." It is thought that fruit bats are natural Ebola virus hosts and is introduced into the human population through close contact with the blood, secretions, organs or other bodily fluids of infected bats and other animals such as chimpanzees, gorillas, monkeys, forest antelope and porcupines.
+
+The current outbreak in West Africa is the largest and most complex Ebola outbreak since the Ebola virus was first discovered in 1976. On August 8, the WHO Director-General declared the West Africa outbreak a Public Health Emergency of International Concern under the International Health Regulations. There have been more cases and deaths in this outbreak than all others combined. 
+
+According to the Center for Disease Control (CDC), the incubation period 2-21 days, and the infectious period $6$ days. Studies have estimated that the contact rate is $1.14$/day during the infectious period for individuals being treated by members of their community. In contrast, the contact rate is $4.56$/day for hospitalized individuals. In commmunity care, transmission probability is $0.16$, but for hospitals observing the appropriate protocals, the transmission probability is only $0.01$. The mortality rate in either situation is approximately $70\%$. Individuals in community care often receive "unsecured burials" which last two days and lead to a $6.8$ per day contact rate with the infectious body. 
+
+**What is $R_0$ for non-hospitalized individuals? hospitalized individuals?** 
+
+
+**What percentage of infected individuals need to be hospitalized to prevent outbreak?**
+			
+
+*Discuss relationship to the publicized CDC predictions*
+
+
+
 
 
 ## Dengue
 
 
-# SIR model
+**See lecture slides**
+
+# Disease dynamics
+
+## SIR model
 
 To describe the *dynamics* of a disease as it propagates through a popuation, we begin with a basic discrete time model where individuals are either susceptible (S), infected and infectious (I), or removed (R) from the susceptible and infectious pool of individuals. Removal may correspond to individuals recovering and becoming immune to reinfection, or individuals die. In either case, these individuals are not contributing the disease dynamics. 
 
 Let $S_t$, $I_t$, and $R_t$ denote the number of susceptible, infected and removed individuals at time $t$ e.g. day $t$. We will focus on diseases where the population size (including possibly dead individuals) is relatively constant. In particular, we will (for now) ignore births and deaths due to other sources of mortality. This assumption is reasonable when we are interested in the outbreak dynamics of a disease with short infectious period relative to a human (or more generally host) lifespan. Let $N=S_t+I_t+R_t$ be the total population size. 
 
-Assume that each susceptible individual encounters infected individuals at a rate $c$ (the contact rate) and $p$ is the probability there is a sucessful transmission event following an encounter. Under this assumption, one can show (see challenge exercise below) that the probability of a suscpetible individual "escaping" infection from time $t$ to $t+1$ is $\exp(-pc I_t)$. Lets also assume that a fraction $\gamma$ of infected individuals are removed at the end of each day. **Under this set of assumptions, write down a model of the SIR dynamics** You should get the following (**be sure you understand why!!**)
+Assume that each susceptible individual encounters individuals randomly at a rate $c$ (the contact rate) and $p$ is the probability there is a sucessful transmission event following an encounter with an infected individual. As the probability that a randomly encountered individual is infected is $I/N$, the rate at which a susceptible individual encouters infected individuals and gets infected is $pcI/N$.  Under these assumptions, one can show (see challenge exercise below) that the probability of a suscpetible individual "escaping" infection from time $t$ to $t+1$ is $\exp(-pc I_t/N)$. Lets also assume that a fraction $\gamma$ of infected individuals are removed at the end of each day. **Under this set of assumptions, write down a model of the SIR dynamics** You should get the following (**be sure you understand why!!**)
 \[
 \begin{aligned}
-S_{t+1}&=S_t \exp(-pc I_t)\\
-I_{t+1}&=S_t(1-\exp(-pc I_t))+(1-\gamma)I_t\\
+S_{t+1}&=S_t \exp(-\beta I_t/N)\\
+I_{t+1}&=S_t(1-\exp(-\beta I_t/N))+(1-\gamma)I_t\\
 R_{t+1}&=R_t+\gamma I_t
 \end{aligned}
 \]
+where $\beta=pc$. 
+
 Before we try to analyze this model by relating it to our $R_0$ work, lets try simulating it!. The following code is a simulator that plots the SIR dynamics as a function of time $t$. 
 ```{r}
-SIR=function(p,c,gamma,N,I0,T){
+SIR=function(beta,gamma,N,I0,S0,T){
  S=matrix(NA,T,length(I0))
- S[1,]=N-I0
+ S[1,]=S0
  I=matrix(NA,T,length(I0))
  I[1,]=I0
  for(t in 1:(T-1)){
-   S[t+1,]=S[t,]*exp(-p*c*I[t,])
-   I[t+1,]=S[t,]*(1-exp(-p*c*I[t,]))+(1-gamma)*I[t,] 
+   S[t+1,]=S[t,]*exp(-beta*I[t,]/N)
+   I[t+1,]=S[t,]*(1-exp(-beta*I[t,]/N))+(1-gamma)*I[t,] 
  }
  R=N-S-I
  par(cex.axis=1.5,cex.lab=1.5)
- matplot(S,type="l",col="green",xlab="days",bty="n",ylab="abundances",lwd=2)
+ matplot(S,type="l",col="green",xlab="days",bty="n",ylab="abundances",lwd=2,ylim=c(0,N))
  matplot(I,type="l",col="red",add=TRUE,lwd=2)
  matplot(R,type="l",col="black",add=TRUE,lwd=2)
- legend("right",c("S","I","R"),lty=1,col=c("green","red","black"),bty="n",cex=1.5,lwd=2)
+ legend("right",c("Susceptible","Infected","Recovered"),lty=1,col=c("green","red","black"),bty="n",cex=1.5,lwd=2)
 }
 ```
 
-Let runs this code using parameters consistent with measles. As measles lasts about $10$ days, we can set $\gamma=1/10$ i.e. there is a $1/10$th chance per day that an infected individual recovers and, consequently, on average an individual remains infected for $10$ days.  
+Let runs this code using parameters consistent with measles from our earlier discussion. As measles lasts about $10$ days, we can set $\gamma=1/10$ i.e. there is a $1/10$th chance per day that an infected individual recovers and, consequently, on average an individual remains infected for $10$ days. For the contact rate $\beta$, we will use $1.2$. Assuming a small population size of $1000$ individuals with one infected individual, we get the following dynamics
+
+```{r}
+SIR(beta = 1.2,gamma = 0.1,I0 = 1,S0=999,N=1000,T=45)
+```
+
+Several things worth noting. First, an outbreak occurs: there is a substansial rise in the number of infected individuals. Second, during the first phase of the outbreak, the infected population is increasing exponentially while the susceptibles fall exponentially. Third, the recovered also increases exponentially but lags behind the infected. Forth, the infected eventually reaches a peak and declines exponentially as the number of suspectible declines. Finally, not everyone gets ultimately infected. 
+
+Now lets change the model run by assuming that initially 95\% of the population is vacinated for measles (i.e. removed) and $1$ person is infected. 
+
+```{r}
+SIR(beta = 1.2,gamma = 0.1,I0 = 1,S0=49,N=1000,T=45)
+```
+
+In this case there is no outbreak. *Why the difference?* To get at this question and link back to our discussion about $R_0$, we need some more mathematical tools. 
+
 
 
