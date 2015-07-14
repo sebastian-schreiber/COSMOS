@@ -18,6 +18,12 @@ These notes are the basis of the lectures that I give as part of the "Mathematic
 
 ## Herd immunity
 
+Given that that whether $R_0>1$ or $<1$ determines whether a disease is likely to give rise to a major outbreak, finding meeans and methods to reduce $R_0$ to $<1$ has been an important focus of epidemiology. Finding vaccines is one such method. Under ideal conditions, these vacciness ensure the indivdiuals are no longer suscpetable to the disease and, thereby, reduce the reproductive number of the disease. 
+
+Suppose that a fraction $v$ of the population has been vacinated for a disease whose reproductive number is $>1$ in the absence of the vaccine. **Determine how effective the vaccine needs to be in order to prevent major outbreaks.** **Answer:** Since the susceptible pool is reduced by fraction $1-v$, the post-vacinnation reproductive number is $(1-v)R_0$. We want $(1-v)R_0<1$. Equivalently, $v>1-1/R_0$. As $R_0>1$, the critical vaccination threshold is less than $1$ i.e. less than $100\%$. Not all individuals need to be vaccinated to prevent major outbreaks. Hence, provided enough folks are vaccinated, they protect the rest of the population for exposure to disease. This effect is called *herd immunity*: vacinating a fraction of the herd, protects the rest of the herd. 
+
+**Give table of estimated $R_0$ values for several diseases and ask students to compute the critical $v$ values.**
+
 
 **See lecture slides**
 
@@ -36,7 +42,7 @@ According to the Center for Disease Control (CDC), the incubation period 2-21 da
 **What percentage of infected individuals need to be hospitalized to prevent outbreak?**
 			
 
-*Discuss relationship to the publicized CDC predictions*
+**Compare your prediction with what the CDC found** <a href="http://www.cdc.gov/vhf/ebola/outbreaks/2014-west-africa/qa-mmwr-estimating-future-cases.html">here</a> **using more sophisticated methods.**
 
 
 
