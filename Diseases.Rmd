@@ -9,23 +9,32 @@ These notes are the basis of the lectures that I give as part of the "Mathematic
 
 # Introduction
 
-**See lecture slides**
+**See lecture slides** for introduction to epidemiology.
 
 ## $R_0$ and controlling outbreaks
 
 
-**See lecture slides**
+**See lecture slides** for introduction to $R_0$
 
 ## Herd immunity
 
-Given that that whether $R_0>1$ or $<1$ determines whether a disease is likely to give rise to a major outbreak, finding meeans and methods to reduce $R_0$ to $<1$ has been an important focus of epidemiology. Finding vaccines is one such method. Under ideal conditions, these vacciness ensure the indivdiuals are no longer suscpetable to the disease and, thereby, reduce the reproductive number of the disease. 
+Given that that whether $R_0>1$ or $<1$ determines whether a disease is likely to give rise to a major outbreak, finding means and methods to reduce $R_0$ to $<1$ has been an important focus of epidemiology. Finding vaccines is one such method. Under ideal conditions, these vaccines ensure the individuals are no longer susceptible to the disease and, thereby, reduce the reproductive number of the disease. 
 
-Suppose that a fraction $v$ of the population has been vacinated for a disease whose reproductive number is $>1$ in the absence of the vaccine. **Determine how effective the vaccine needs to be in order to prevent major outbreaks.** **Answer:** Since the susceptible pool is reduced by fraction $1-v$, the post-vacinnation reproductive number is $(1-v)R_0$. We want $(1-v)R_0<1$. Equivalently, $v>1-1/R_0$. As $R_0>1$, the critical vaccination threshold is less than $1$ i.e. less than $100\%$. Not all individuals need to be vaccinated to prevent major outbreaks. Hence, provided enough folks are vaccinated, they protect the rest of the population for exposure to disease. This effect is called *herd immunity*: vacinating a fraction of the herd, protects the rest of the herd. 
+Suppose that a fraction $v$ of the population has been vaccinated for a disease whose reproductive number is $>1$ in the absence of the vaccine. **Determine how effective the vaccine needs to be in order to prevent major outbreaks.** **Answer:** Since the susceptible pool is reduced by fraction $1-v$, the post-vaccination reproductive number is $(1-v)R_0$. We want $(1-v)R_0<1$. Equivalently, $v>1-1/R_0$. As $R_0>1$, the critical vaccination threshold is less than $1$ i.e. less than $100\%$. Not all individuals need to be vaccinated to prevent major outbreaks. Hence, provided enough folks are vaccinated, they protect the rest of the population for exposure to disease. This effect is called *herd immunity*: vaccinating a fraction of the herd, protects the rest of the herd. 
 
-**Give table of estimated $R_0$ values for several diseases and ask students to compute the critical $v$ values.**
+**For the following diseases, compute the critical $v$ values.**
 
+Disease|Transmission|$R_0$|Threshold
+--|--|--|--|
+Diphtheria|Saliva|6-7|**?**
+Measles |Airborne |12-18| **?**
+Mumps|Airborne droplet|4-7|**?**
+Pertussis|Airborne droplet|12-17|**?**
+Polio|Fecal-oral route|5-7|**?**
+Rubella|Airborne droplet|5-7|**?**
+Smallpox|Social contact|6-7|**?**
 
-**See lecture slides**
+**See lecture slides for discussion on smallpox**
 
 ## Ebola
 
@@ -34,7 +43,7 @@ there are "currently no licensed Ebola vaccines but two candidates are undergoin
 
 The current outbreak in West Africa is the largest and most complex Ebola outbreak since the Ebola virus was first discovered in 1976. On August 8, the WHO Director-General declared the West Africa outbreak a Public Health Emergency of International Concern under the International Health Regulations. There have been more cases and deaths in this outbreak than all others combined. 
 
-According to the Center for Disease Control (CDC), the incubation period 2-21 days, and the infectious period $6$ days. Studies have estimated that the contact rate is $1.14$/day during the infectious period for individuals being treated by members of their community. In contrast, the contact rate is $4.56$/day for hospitalized individuals. In commmunity care, transmission probability is $0.16$, but for hospitals observing the appropriate protocals, the transmission probability is only $0.01$. The mortality rate in either situation is approximately $70\%$. Individuals in community care often receive "unsecured burials" which last two days and lead to a $6.8$ per day contact rate with the infectious body. 
+According to the Center for Disease Control (CDC), the incubation period 2-21 days, and the infectious period $6$ days. Studies have estimated that the contact rate is $1.14$/day during the infectious period for individuals being treated by members of their community. In contrast, the contact rate is $4.56$/day for hospitalized individuals. In community care, transmission probability is $0.16$, but for hospitals observing the appropriate protocols, the transmission probability is only $0.01$. The mortality rate in either situation is approximately $70\%$. Deaths in community care often receive "unsecured burials" which last two days and lead to a $6.8$ per day contact rate with the infectious body. 
 
 **What is $R_0$ for non-hospitalized individuals? hospitalized individuals?** 
 
@@ -57,11 +66,11 @@ According to the Center for Disease Control (CDC), the incubation period 2-21 da
 
 ## SIR model
 
-To describe the *dynamics* of a disease as it propagates through a popuation, we begin with a basic discrete time model where individuals are either susceptible (S), infected and infectious (I), or removed (R) from the susceptible and infectious pool of individuals. Removal may correspond to individuals recovering and becoming immune to reinfection, or individuals die. In either case, these individuals are not contributing the disease dynamics. 
+To describe the *dynamics* of a disease as it propagates through a population, we begin with a basic discrete time model where individuals are either susceptible (S), infected and infectious (I), or removed (R) from the susceptible and infectious pool of individuals. Removal may correspond to individuals recovering and becoming immune to reinfection, or individuals die. In either case, these individuals are not contributing the disease dynamics. 
 
 Let $S_t$, $I_t$, and $R_t$ denote the number of susceptible, infected and removed individuals at time $t$ e.g. day $t$. We will focus on diseases where the population size (including possibly dead individuals) is relatively constant. In particular, we will (for now) ignore births and deaths due to other sources of mortality. This assumption is reasonable when we are interested in the outbreak dynamics of a disease with short infectious period relative to a human (or more generally host) lifespan. Let $N=S_t+I_t+R_t$ be the total population size. 
 
-Assume that each susceptible individual encounters individuals randomly at a rate $c$ (the contact rate) and $p$ is the probability there is a sucessful transmission event following an encounter with an infected individual. As the probability that a randomly encountered individual is infected is $I/N$, the rate at which a susceptible individual encouters infected individuals and gets infected is $pcI/N$.  Under these assumptions, one can show (see challenge exercise below) that the probability of a suscpetible individual "escaping" infection from time $t$ to $t+1$ is $\exp(-pc I_t/N)$. Lets also assume that a fraction $\gamma$ of infected individuals are removed at the end of each day. **Under this set of assumptions, write down a model of the SIR dynamics** You should get the following (**be sure you understand why!!**)
+Assume that each susceptible individual encounters individuals randomly at a rate $c$ (the contact rate) and $p$ is the probability there is a successful transmission event following an encounter with an infected individual. As the probability that a randomly encountered individual is infected is $I/N$, the rate at which a susceptible individual encounters infected individuals and gets infected is $pcI/N$.  Under these assumptions, one can show (see challenge exercise below) that the probability of a susceptible individual "escaping" infection from time $t$ to $t+1$ is $\exp(-pc I_t/N)$. Lets also assume that a fraction $\gamma$ of infected individuals are removed at the end of each day. **Under this set of assumptions, write down a model of the SIR dynamics** You should get the following (**be sure you understand why!!**)
 \[
 \begin{aligned}
 S_{t+1}&=S_t \exp(-\beta I_t/N)\\
@@ -97,9 +106,9 @@ Let runs this code using parameters consistent with measles from our earlier dis
 SIR(beta = 1.2,gamma = 0.1,I0 = 1,S0=999,N=1000,T=45)
 ```
 
-Several things worth noting. First, an outbreak occurs: there is a substansial rise in the number of infected individuals. Second, during the first phase of the outbreak, the infected population is increasing exponentially while the susceptibles fall exponentially. Third, the recovered also increases exponentially but lags behind the infected. Forth, the infected eventually reaches a peak and declines exponentially as the number of suspectible declines. Finally, not everyone gets ultimately infected. 
+Several things worth noting. First, an outbreak occurs: there is a substantial rise in the number of infected individuals. Second, during the first phase of the outbreak, the infected population is increasing exponentially while the susceptible fall exponentially. Third, the recovered also increases exponentially but lags behind the infected. Forth, the infected eventually reaches a peak and declines exponentially as the number of susceptible declines. Finally, not everyone gets ultimately infected. 
 
-Now lets change the model run by assuming that initially 95\% of the population is vacinated for measles (i.e. removed) and $1$ person is infected. 
+Now lets change the model run by assuming that initially 95\% of the population is vaccinated for measles (i.e. removed) and $1$ person is infected. 
 
 ```{r}
 SIR(beta = 1.2,gamma = 0.1,I0 = 1,S0=49,N=1000,T=45)
