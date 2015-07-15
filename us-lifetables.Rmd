@@ -1,0 +1,64 @@
+---
+title: "US Lifetables"
+author: "Sebastian Schreiber"
+date: "July 12, 2015"
+output: html_document
+---
+
+A few lines of code to plot survivorship curves from 1933 and 2010 from males and females in the US. First, we extract the data from the csv file and use the names command to see all the column names
+```{r}
+us=read.csv(file="us-lifetables.csv")
+names(us)
+```
+Next we extract the $l_x$ values (surviving to age $x$ out of an initial cohort of 100,000 individuals) for 1933 and normalize them to be fraction surviving. 
+
+```{r}
+temp=which(us$Year==1933) # identify which indices correspond to 1933
+lx1933=us$lx[temp]
+lx1933=lx1933/100000
+```
+
+and do the same thing for 2010
+
+```{r}
+temp=which(us$Year==2010) # identify which indices correspond to 1933
+lx2010=us$lx[temp]
+lx2010=lx2010/100000
+```
+
+Next we plot them against each other
+
+```{r}
+lxs=cbind(lx1933,lx2010) # turn them into a matrix with 2 columns
+matplot(lxs,type="l",lwd=3,xlab="age",ylab=expression(l[x]))
+```
+
+Finally can look at mortality rates which are approximately given by $l[x]-l[x+1]$. 
+
+```{r}
+n=length(lx1933)
+mx1933=-lx1933[-1]+lx1933[-n]
+n=length(lx2010)
+mx2010=-lx2010[-1]+lx2010[-n]
+mxs=cbind(mx1933,mx2010) # turn them into a matrix with 2 columns
+matplot(mxs,type="l",lwd=3,xlab="age",ylab=expression(m[x]))
+```
+
+Here is a prettier version of the plot with decadal updates from 1940 to 2010
+
+```{r}
+years=seq(1940,2010,by=10)
+n=length(years)
+mxs=c()
+for(i in 1:n){
+  temp=which(us$Year==years[i])
+  temp2=us$lx[temp]
+  temp2=temp2/sum(temp2)
+  ntemp=length(temp2)
+  temp3=temp2[-ntemp]-temp2[-1]
+  temp3=temp3/(sum(temp3))
+  mxs=cbind(mxs,temp3)
+}
+matplot(mxs,type="l",bty="n",lwd=2,lty=1,xlab="age",ylab="probability density",col=colorRampPalette(c("red", "blue"))(n))
+legend("topleft","Mortality pdfs \n from 1940 to 2010\n by decade",bty="n")
+```
