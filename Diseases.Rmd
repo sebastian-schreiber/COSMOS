@@ -11,10 +11,21 @@ These notes are the basis of the lectures that I give as part of the "Mathematic
 
 **See lecture slides** for introduction to epidemiology.
 
+According H. Shodell (Science 1982, September, p. 50)
+
+> Epidemiologists are like bookies of disease, stalking the globe to determine point-spreads on which groups of people are most likely to get which diseases.Part detective and part statistician, part anthropologist and part physician, epidemiologists hope to track down the agents of illness by deducing which of the differences between peoples lie at the root of their distinctive disease patterns.
+
+
 ## $R_0$ and controlling outbreaks
 
 
 **See lecture slides** for introduction to $R_0$
+
+According the Center for Disease Control (CDC)
+
+>Measles is highly contagious and can be spread to others from four days before to four days after the rash appears. Measles is 		so contagious that if one person has it, 90%	of the people close to that person who are		not immune will also become infected with the measles virus.
+
+**If an individual has a contact rate of approximately 2 individuals per day, what is R0 for measles?**
 
 ## Herd immunity
 
@@ -33,6 +44,11 @@ Pertussis|Airborne droplet|12-17|**?**
 Polio|Fecal-oral route|5-7|**?**
 Rubella|Airborne droplet|5-7|**?**
 Smallpox|Social contact|6-7|**?**
+
+Discuss voluntary vaccinations and the following quote from Wikipedia:
+
+>1998 publication of a fraudulent research paper in the medical journal The Lancet that lent support to the subsequently discredited theory that autism could be caused by MMR vaccine. Andrew Wakefield had multiple undeclared conflicts of interest, had manipulated evidence, and had broken other ethical codes. The Lancet paper was fully retracted in 2010, and Wakefield was found guilty by the General Medical Council of serious professional misconduct in 2010. Former Playmate of the Month and comedy TV star, Jenny McCarthy, wrote a book about her son’s apparent autism, and her belief the preservative in the MMR jab had caused it.
+
 
 **See lecture slides for discussion on smallpox**
 
@@ -116,7 +132,7 @@ SIR(beta = 1.2,gamma = 0.1,I0 = 1,S0=49,N=1000,T=45)
 
 In this case there is no outbreak. *Why the difference?*
 
-To get at this question and link back to our discussion about $R_0$, we will do some analysis. Recall, an equilibrium $(S^*,I^*,R^*)$ is an initial condition for the model such that $S_t=S^*,I_t=I^*,R_t=R^*$ implies that $S_{t+1}=S^*,I_{t+1}=I^*,R_{t+1}=R^*$ i.e. the abundances do not change over time. **What are the equilibria of the model?** A little thought reveals that they are all of the form $S=S^*,I=0,R=N-S^*$ for any $S^*$ between $0$ and $N$. In otherwords, an initial condition without the disease is an equilibrium. 
+To get at this question and link back to our discussion about $R_0$, we will do some analysis. Recall, an equilibrium $(S^*,I^*,R^*)$ is an initial condition for the model such that $S_t=S^*,I_t=I^*,R_t=R^*$ implies that $S_{t+1}=S^*,I_{t+1}=I^*,R_{t+1}=R^*$ i.e. the abundances do not change over time. **What are the equilibria of the model?** A little thought reveals that they are all of the form $S=S^*,I=0,R=N-S^*$ for any $S^*$ between $0$ and $N$. In other words, an initial condition without the disease is an equilibrium. 
 
 
 Now, lets consider the dynamics of $I_t$ when the population is near a disease free equilibrium $S_t\approx S^*,I_t\approx 0,R_t\approx N-S^*$. Recall from calculus, $1-\exp(-x)\approx x$ for $x$ sufficiently small. Hence, $1-\exp(-\beta I_t/N)\approx \beta I_t/N$ for $I_t\approx 0$ and 
