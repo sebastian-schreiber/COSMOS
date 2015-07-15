@@ -60,7 +60,7 @@ According to the Center for Disease Control (CDC), the incubation period 2-21 da
 ## Dengue
 
 
-**See lecture slides**
+*Upcoming*
 
 # Disease dynamics
 
@@ -114,7 +114,12 @@ Now lets change the model run by assuming that initially 95\% of the population 
 SIR(beta = 1.2,gamma = 0.1,I0 = 1,S0=49,N=1000,T=45)
 ```
 
-In this case there is no outbreak. *Why the difference?* To get at this question and link back to our discussion about $R_0$, we need some more mathematical tools. 
+In this case there is no outbreak. *Why the difference?* To get at this question and link back to our discussion about $R_0$, we will approximate the dynamics of $I_t$ when the population is near the disease free equilibrium $S_t\approx N,I_t\approx 0$. Recall from calculus, $1-\exp(-x)\approx x$ for $x$ sufficiently small. Hence, $1-\exp(-\beta I_t/N)\approx \beta I_t/N$ for $I_t\approx 0$ and 
+\[
+I_{t+1}\approx N \beta I_t/N +(1-\gamma)I_t=(\beta+1-\gamma)I_t
+\]
+But this is the linear population growth model that Tim Lewis told you about. Hence, the infected would tend to grow if and only $\beta+1-\gamma>1$. Equivalently $\beta/\gamma>1$. **But what is $\beta/ \gamma$?** Well, $1/\gamma$ is the mean duration of the infectious period and $\beta$ is the number of people infected per day of the infectious period (in a fully susceptible population). **Hence, $\beta/\gamma$ is $R_0$!!!**
+
 
 
 
