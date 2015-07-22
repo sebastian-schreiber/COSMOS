@@ -1,7 +1,7 @@
 ---
 title: "Evolutionary Game Theory"
 author: "Sebastian Schreiber"
-date: "July 7, 2015"
+date: Started July 7, 2015; Last Update July 22, 2015
 output: html_document
 ---
 
