@@ -12,13 +12,13 @@ These notes are the basis of the lectures that I give as part of the "Mathematic
 
 Populations of organisms, whether they be plants, animals, or viruses, consist of individuals with different genotypes - the blueprint inherited from their parents which, along with their environment, determines their behavior, physiology, and morphology. At any point in time, individuals of one of these genotypes may be better at dealing with the current environment and, consequently, live longer and produce more offspring than individuals with other genotypes. When this occurs, this more "fit" genotype will increase in frequency relative to the other genotypes. This combination of offspring inheriting their parental genotypes and survival of the fittest is the basis of evolution by natural selection as described by Charles Darwin at the end of the 19th century. This simple, yet profound principle has provided exceptionally useful in understanding the origins of diversity, combat diseases, and  produce food more efficiently. 
 
-Evolutionary games provide a simple framework to mathematically encode key element of evolution by natural selection. This framework allows one to tackle a variety of fundamental biological questions such as: If natural selection favors more "fit" indivudals, how does non-aggressive behavior and, more shockingly, altruistic behavior evolve? Why do many species produce equal ratios of sons and daughters? *more to come* In these lecture notes, I will introduce the fundamentals of evolutionary game theory and its applications to these and other questions. 
+Evolutionary games provide a simple framework to mathematically encode key element of evolution by natural selection. This framework allows one to tackle a variety of fundamental biological questions such as: If natural selection favors more "fit" individuals, how does non-aggressive behavior and, more shockingly, altruistic behavior evolve? Why do many species produce equal ratios of sons and daughters? *more to come* In these lecture notes, I will introduce the fundamentals of evolutionary game theory and its applications to these and other questions. 
 
 
 
 # Static Games
 
-Even though evolution by natural selection is a dynamic process, we will begin by examining static games which provided the historical context for discussing dynamic games. These games envision a two players that interact by each playing one of a finite number of strategies. The outcome of these interactions provide a payoff to each player which contribute to an individual's lifetime reproductive success. To start the discussion, we consider a classic game, the prisonner's dilemma, which involves a contest between two humans. 
+Even though evolution by natural selection is a dynamic process, we will begin by examining static games which provided the historical context for discussing dynamic games. These games envision a two players that interact by each playing one of a finite number of strategies. The outcome of these interactions provide a payoff to each player which contribute to an individual's lifetime reproductive success. To start the discussion, we consider a classic game, the prisoner's dilemma, which involves a contest between two humans. 
 
 Envision that you and a friend have committed a major robbery and have been arrested. If convicted of this crime, you will spend $30$ years in prison. Fortunately for you, the police have only sufficient evidence to convict either of you of a much lesser crime, carrying a unlicensed firearm. Convicted of this crime, you would only spend $5$ years in prison. In the hope to extract a confession from one of you, the police have placed you in separate interrogation rooms. In each room, they make the following offer "If you provide evidence against your partner on the robbery but your partner does not provide evidence against you, you will go free and your partner will do the time. If you both provide evidence against each other, you will both do the time but with a reduced sentence of $15$ years."  **What do you do?** 
 
@@ -97,7 +97,7 @@ mean(payoffs) # computes the average (mean)
 \[
 \frac{1}{6}\times 1 + \frac{5}{6}\times 0 = \frac{1}{6}
 \]
-This quantity is called *the expected payoff* of this dove strategy against the $\frac{1}{6}$ strategist. One can visualize the convergence to the expected payoff by ploting the average payoff as a function of the number of games:
+This quantity is called *the expected payoff* of this dove strategy against the $\frac{1}{6}$ strategist. One can visualize the convergence to the expected payoff by plotting the average payoff as a function of the number of games:
 ```{r,fig.width=6,fig.height=4}
 plot(1:n,cumsum(payoffs)/1:n,typ="l",bty="n",lwd=3,xlab="number of games",ylab="mean payoff")
 abline(h=1/6,col="red")
@@ -173,7 +173,7 @@ Hawk|$V$|$\frac{V-C}{2}$
 
 **Try answering the following questions by solving the Nash equilibria:**
 
-1. Underwhat conditions is there a pure Nash equilibrium? 
+1. Under what conditions is there a pure Nash equilibrium? 
 2. When does the Nash equilibrium correspond to less aggressive behavior? 
 
 **Answers:** 
@@ -237,9 +237,9 @@ To explore this definition, lets work through two examples with the hawk-dove ga
 
 The Nash equilibrium concepts assumes that the two players are *fully rationale* and *have complete knowledge* about the payoff matrix. However, we hardly can expect this to be the case for most individuals, whether we are talking humans or bacteria. <span style="color:blue">Play clip from <a href="https://en.wikipedia.org/wiki/The_Princess_Bride_(film)"> The princess bride </a>!!</span> Furthermore, our games have been static, but evolution is, by definition, a dynamic process in which frequencies of genotypes change over time. To account for this dynamic, we will model the dynamics of two competing genotypes. 
 
-To keep things simple, we assume asexual reproduction whereby like begets like. Lets call these genotypes, genotype $1$ and genotype $2$. These genotypes live in an environement which can support only $N$ individuals (Here $N$ is XXL). Let $x_t$ be the frequency of genotype $1$ at time $t$. Let $p_i(x_t)$ be the number of offspring produced by genotype $i$ at time $t$. As the notation suggests, these $p_i$ may correspond to the payoff functions from the static models where the opponent is a randomly choosen individual from the population. 
+To keep things simple, we assume asexual reproduction whereby like begets like. Lets call these genotypes, genotype $1$ and genotype $2$. These genotypes live in an environment which can support only $N$ individuals (Here $N$ is XXL). Let $x_t$ be the frequency of genotype $1$ at time $t$. Let $p_i(x_t)$ be the number of offspring produced by genotype $i$ at time $t$. As the notation suggests, these $p_i$ may correspond to the payoff functions from the static models where the opponent is a randomly chosen individual from the population. 
 
-To define the population dynamic, we assume that each time step (e.g. year) a fraction $\delta$ of individuals die, thereby freeing up terrorities for $\delta N$ individual offspring to settle. Each offspring (independent of genotype) is equally likely to get a freed up territory. **Armed with this information, what might the update rule be for $x_t$?**
+To define the population dynamic, we assume that each time step (e.g. year) a fraction $\delta$ of individuals die, thereby freeing up territories for $\delta N$ individual offspring to settle. Each offspring (independent of genotype) is equally likely to get a freed up territory. **Armed with this information, what might the update rule be for $x_t$?**
 
 Well, a bit of thought (*will add more later*) reveals
 \[
@@ -291,13 +291,13 @@ The Nash equilibria $0,1$ are stable, but the Nash equilibrium of $1/3$ is unsta
 
 *How might one check for stability?* Provided that $\delta>0$ is sufficiently small, it is fairly simple. Say $0<x^*<1$ is a Nash equilibrium. This equilibrium will be stable for the dynamic provided that the frequency of strategy $1$ is increasing when it is slightly slightly below $x^*$, and decreasing when it is slightly above $x^*$. In equations **(Check this for yourselves!!)**, $p_1(x)>p_2(x)$ for $x$ slightly smaller than $x^*$ and $p_1(x)<p_2(x)$ for $x$ slightly larger than $x^*$. Things get even simpler for the $p_i(x)$ functions that we have been using as they are linear in $x$. Hence **(check this for yourselves!)**, the stability condition reduces to $p_1(0)>p_2(0)$ (strategy $1$ increases when rare) and $p_2(1)>p_1(1)$ (strategy $2$ increases when rare). Conversely, if any of the inequalities are reversed, $x^*$ is unstable. 
 
-**Try this out for the hawk-dove game and modified prisoner's dilemma, and verify that the simulations are doing the right thing :)** In the hawk-dove game, we have $p_1(0)=1>1/2=p_2(0)$ and $p_2(1)=3>2=p_1(1)$. Hence, the equilibrium $x=1/3$ is stable, as we observed in the numerics. In the modified prisonner's dilemma, $p_1(0)=0<1=p_2(0)$. Hence, the equilibrium $x=1/4$ is unstable, as we observed in the numerics.
+**Try this out for the hawk-dove game and modified prisoner's dilemma, and verify that the simulations are doing the right thing :)** In the hawk-dove game, we have $p_1(0)=1>1/2=p_2(0)$ and $p_2(1)=3>2=p_1(1)$. Hence, the equilibrium $x=1/3$ is stable, as we observed in the numerics. In the modified prisoner's dilemma, $p_1(0)=0<1=p_2(0)$. Hence, the equilibrium $x=1/4$ is unstable, as we observed in the numerics.
 
 # Best-response dynamics
 
-In light of the lab on Blespharisma population dynamics, I thought it would be fun to take a little detour to another type of game dynamics. As you saw, individual cells of Blespharisma (by forgoing some cell division events) could become "giant cannibals" which not only eat bacteria but fellow protozoans. This shift in morphology and behavior seems to be "plastic" i.e. individuals switch to this behavior only when there are many "dwarf" (i.e. non-giant) Blespharisma to consume. 
+In light of the lab on Blepharisma population dynamics, I thought it would be fun to take a little detour to another type of game dynamics. As you saw, individual cells of Blepharisma (by forgoing some cell division events) could become "giant cannibals" which not only eat bacteria but fellow protozoans. This shift in morphology and behavior seems to be "plastic" i.e. individuals switch to this behavior only when there are many "dwarf" (i.e. non-giant) Blepharisma to consume. 
 
-To model these behavioral dynamics (in a simple way), let us assume that there is the base fitness for dwarfs is $a$ derived from eating bacteria, but the base fitness for the giants is $0$ as they only eat dwarfs (**Think about how to relax this extreme assumption**). When dwarfs encounter one another, there is no effect on their fitness. However, when a giant encouters a dwarf, it captures it with probability $p$ in which case gets $b$ offspring and the dwarf dies losing its $a$ offspring. When two giants encounter one another, there is no effect on their fitness. Hence, the payoff matrix is 
+To model these behavioral dynamics (in a simple way), let us assume that there is the base fitness for dwarfs is $a$ derived from eating bacteria, but the base fitness for the giants is $0$ as they only eat dwarfs (**Think about how to relax this extreme assumption**). When dwarfs encounter one another, there is no effect on their fitness. However, when a giant encounters a dwarf, it captures it with probability $p$ in which case gets $b$ offspring and the dwarf dies losing its $a$ offspring. When two giants encounter one another, there is no effect on their fitness. Hence, the payoff matrix is 
 
 ||Dwarf |Giant
 ---|---------|------
@@ -373,7 +373,7 @@ abline(h=a*(1-p)/(p*(b-a)),lty=2,lwd=4)
 
 # Three or more genotypes
 
-What about more than $2$ genotypes? Everything generalizes quite naturally. Before stating the general forms of the static games and replicator dynamics, lets consider the rock, paper, scissor game of childhood fame. This game is characterize by an intransitivity: scissor beats paper, paper beats rock, and rock beats scissor. Remarkably, this game shows up in a variety of natural populations. <span style="color:blue"> Discuss and rock, paper, scissor in *E.coli* populations and side-blotched lizards.</span> 
+What about more than $2$ phenotype? Everything generalizes quite naturally. Before stating the general forms of the static games and replicator dynamics, lets consider the rock, paper, scissor game of childhood fame. This game is characterize by an intransitivity: scissor beats paper, paper beats rock, and rock beats scissor. Remarkably, this game shows up in a variety of natural populations. <span style="color:blue"> Discuss and rock, paper, scissor in *E.coli* populations and side-blotched lizards.</span> 
 
 ```{r}
 replicator3=function(p1,p2,p3,delta=0.01,T=15000,x0,y0,type=1){
