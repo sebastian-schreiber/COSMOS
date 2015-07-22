@@ -128,7 +128,7 @@ p_2(x)=x a_{21}+(1-x)a_{22}
 \]
 **What are these in terms of the hawk-dove game?** Simply, 
 \[
-p_1(x)=x\times 1+(1-x)\times 0 = x 
+p_1(x)=x\times 1+(1-x)\times 0 = x
 \]
 and 
 \[
@@ -301,13 +301,13 @@ To model these behavioral dynamics (in a simple way), let us assume that there i
 
 ||Dwarf |Giant
 ---|---------|------
-Dwarf|a|(1-p)a
+Dwarf|a|p(-a)+(1-p)a=a(1-2p)
 Giant|pb|0
 
-When $pb>a$, we get a hawk-dove game in which playing a strategy different from your opponent is best. Assume this holds. If $x$ is the frequency of dwarves in the population, then the payoff functions of interacting with a random individual from the population are given by 
+**When do you get a hawk-dove game? Coordination game?** To get a hawk-dove game, we need that $pb>a$ and $p<1/2$ i.e. eating dwarves has to be worthwhile, but dwarves have to have a reasonable chance of escaping. If $x$ is the frequency of dwarves in the population, then the payoff functions of interacting with a random individual from the population are given by 
 \[
 \begin{aligned}
-p_1(x)&=a x+(1-p)a(1-x)=a(1-p)+apx\\
+p_1(x)&=a x+(1-2p)a(1-x)\\
 p_2(x)&=pbx
 \end{aligned}
 \]
@@ -351,11 +351,11 @@ matplot(x,type="l",lty=1,lwd=2,xlab="time",ylab="frequency")
 	}
 ```
 
-Lets try this out for parameter values satisfying $pb>a$: 
+Lets try this out for parameter values satisfying $pb>a$ and $p<1/2$: 
 
 ```{r}
-b=4;a=1;p=1/2
-p1=function(x)a*(1-p)+a*p*x
+b=25;a=7;p=1/3
+p1=function(x)a*x+a*(1-2*p)*(1-x)
 p2=function(x)p*b*x
 best.response(p1=p1,p2=p2)
 ```
@@ -363,11 +363,11 @@ best.response(p1=p1,p2=p2)
 Notice that the dynamics are converging to a special value at which the population consists of a mixture of giants and dwarfs. **What is this value? Is it a Nash equilibrium? When will giants be rare in the population?** Answer is partially shown in the code below. 
 
 ```{r}
-b=4;a=1;p=1/2
-p1=function(x)a*(1-p)+a*p*x
+b=25;a=7;p=1/3
+p1=function(x)a*x+a*(1-2*p)*(1-x)
 p2=function(x)p*b*x
 best.response(p1=p1,p2=p2)
-abline(h=a*(1-p)/(p*(b-a)),lty=2,lwd=4)
+abline(h=a*(2*p-1)/(p*(2*a-b)),lty=2,lwd=4)
 ```
 
 # Three or more genotypes
