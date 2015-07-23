@@ -542,7 +542,12 @@ Hence, the quantity $0.25^{0.4}\times 2^{0.6}$ (or its log) seems to do a much b
 \[
 a_1^{p_1}a_2^{p_2}\dots a_k^{p_k}=:\prod_i a_i^{p_i}
 \]
-If these are the values that $R(t)$ take in our population model, we have the following observation: *If the geometric mean of the $R(t)$ is less than one, then population tends to toward extinction. If it is greater than one, then it grows exponentially.*  
+If these are the values that $R(t)$ take in our population model, we have the following observation: *If the geometric mean of the $R(t)$ is less than one, then population tends to toward extinction. If it is greater than one, then it grows exponentially.*  Daniel Bernoulli, to my knowledge, was the first to recognize the importance of the geometric mean for multiplicative processes like population growth. In his 1738 classic paper, *Specimen theoriae novae de mensura sortis* (Exposition of a New Theory on the Measurement of Risk) written in latin, he wrote (loosely translated)
+
+>these terms should then be multiplied together. Then of this product a root must be extracted the degree of which is given by the number of all possible cases. 
+
+This corresponds to geometric mean when you have each number occurs with equal likelihood. Bernoulli used this idea in the context of economic investments and his work provided the basis of the economic theory of risk aversion. We will hear more about that shortly. 
+
 
 Notice that for our special case the expected value (arithmetic mean) of $R(t)$ is less than the geometric mean. This holds generally. To get a better feel for this, **consider the following three scenarios**
 
