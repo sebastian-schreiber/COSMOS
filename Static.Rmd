@@ -568,3 +568,52 @@ sqrt(1.8*0.4)
 ```
 
 So we see that arithmetic means are the same in all three scenarios despite the increasing variation in the $R(t)$ values. This increasing variation, however, leads to lower and lower geometric means where in the final case the population would be decreasing instead of increasing. 
+
+## Bet hedging
+
+The previous work suggests an intriguing possibility. Namely, as decreasing the variation in reproductive success can increase the geometric mean, *would evolution ever select for decreasing the variation in fitness at the expense of decreasing the arthematic mean in fitness?* We will see the answer is **yes!!!** and when this occurs, biologists (motivated by the economic analogy) say that **bet-hedging** has occurred. 
+
+To see how this might arise, lets consider the case of seed banks in annual plants. Ecologists have noticed that the seeds of annual plants may not all germinate in a given year, but some may germinate one, two, or more years later. This occurs despite the seeds in a given region experiencing the same environmental conditions. This raises the question *Why would only some seeds germinate in one year and others in a later year?* 
+
+Lets tackle this question with a modification of our earlier model. In this model, $x(t)$ will be the number of *seeds* in the population in year $t$ immediately prior to germination. Lets assume that a fraction $g$ of seeds germinate in any given year and the remaining fraction $1-g$ remain in the "seed bank". For each seed germinating in year $t$, it produces $Y(t+1)$ seeds surviving to the next year. For seed not germinating, it survives to the next year (e.g. escapes seed predation) with probability $s$. Armed with this information, **write down a model for the seed bank dynamics $x(t)$**.
+
+**Answer:** The total number of seeds germinating is $gx(t)$. Each of these seeds contributes $Y(t+1)$ seeds to the seed bank in the next year. Hence, the net contribution of germinating seeds is $Y(t+1)gx(t)$. The total number of seeds not germinating is $(1-g)x(t)$. Each of these seeds survives with probability $s$ to the next year. Hence, the net contribution of non-germinating seeds is $s g x(t)$. Therefore, our model is given by 
+\[
+x(t+1)=Y(t+1)gx(t)+s(1-g)x(t)=(Y(t+1)g+s(1-g))x(t)
+\]
+
+**Can you think of a monetary analog of this model?** 
+
+**Answer:** Let $x(t)$ be present value of  the money that you have in a savings account. Since the interest rate in a savings account is less than the inflation rate, the present value is decreasing slowly but steadly by $1-s$. Now, let $g$ be the fraction of money that you invest into a risky stock. Then $Y(t+1)$ is the amount of return you get from the stock after a year. 
+
+For initial explorations, lets puts some specific numbers on this model. Lets say $Y(t)$ is $2$ in wet years and $0.25$ in dry years. 60% of the years are wet. Lets say seed survivorship is quite high, say $s=0.95$. Two questions: **What happens to the population in the long-term if all seeds germinate i.e. $g=1$? What happens if no seeds germiante i.e. $g=0$?**
+
+**Answers:** If all seeds germinate, then we get the model from earlier and the population declines to extinction as the geometric mean of $R(t)=Y(t)$ is less than one. If no seeds germinate, the population size in year $t$ is $x(t)=0.95^5 x(0)$. Hence, it also declines to extinction. 
+
+So it looks like always germinating or always not germinating are "loser" strategies. Are there any winning strategies for $g$? To answer this question, **find the choice of $g$ that maximizes the geometric mean of $R(t)=(gY(t)+(1-g)s)$.**
+
+**Answer:** One can do this a variety of ways e.g. graphically, numerically testing different values, etc. Here, I will use the optimize command that we discussed in the module with Jay Rosenheim. First need to define the function being maximzied. We have in 40% of the years, $R(t)$ is equal to $2g+(1-g)0.95$ and $0.25g+(1-g)0.95$ in the remaining years. Hence, the geomtric mean of interest is given by
+
+```{r}
+f=function(g)(2*g+(1-g)*0.95)^0.6*(0.25*g+(1-g)*0.95)^0.4
+```
+
+We can plot this function with respect to $g$
+
+```{r}
+g=seq(0,1,length=50)
+plot(g,f(g),type="l")
+```
+
+Looks like there is a maximum around $g=0.5$ which is $>1$. To find the exact value, we can use the optimize command.
+
+```{r}
+optimize(f,interval = c(0,1),maximum = TRUE)
+```
+
+So we get a maximum at $g=0.45$ of $1.03$. Hence, if the population had adopted this germination strategy of $45\%$ germination rate, then it would be growing by $3\%$ per year in the long-term. So there is a winner strategy!!! How does this winner strategy depend on the details? To answer this question, **examine how the optimal germination strategy and the growth rate of the corresponding population depends on seed survivorship, frequency of wet years, yield on wet years, yield on dry years**
+
+
+**Answer:** Discussion about what each table found. 
+
+Conclude by discussing the amazing work of Larry Venable! and the implications for making money.  
