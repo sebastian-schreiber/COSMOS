@@ -360,13 +360,4 @@ Now suppose we wanted to prevent future outbreak in the random graph but only co
 
 
 
-To see whether this is what happens in practice, we can randomly remove 10 nodes for 100 trials, compute $R_0$ and take the average. 
-```{r}
-reps=100
-R0s=numeric(reps)
-for(i in 1:reps){
-  remove=sample(1:50,size = 10,replace=FALSE)
-  R0s[i]=R0(degree(g2),0.9,control=remove)
-}
-mean(R0s)
-```
+
