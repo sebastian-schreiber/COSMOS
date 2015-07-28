@@ -141,6 +141,232 @@ I_{t+1}\approx S^* \beta I_t/N +(1-\gamma)I_t=(\beta S^*/N+1-\gamma)I_t
 \]
 But this is the linear population growth model that Tim Lewis told you about. Hence, the infected would tend to grow if and only $\beta S^*/N+1-\gamma>1$. Equivalently $(\beta S^*/N)/\gamma>1$. **But what is $(\beta S^*/N)/ \gamma$?** Well, $1/\gamma$ is the mean duration of the infectious period and $\beta S^*/N$ is the number of people infected per day of the infectious period when near the equilibrium $S^*,0,N-S^*$. **Hence, $(\beta S^*/N)/\gamma$ is $R_0$!!!**
 
+# Disease spread on networks
+
+
+The models we have discussed thus far assume that (i) populations are sufficiently large that you can treat them as a continuum, (ii) the dynamics are entirely deterministic, and (iii) individuals encounter one another randomly in the same manner. Here, we relax all of these assumptions by examining disease dynamics on finite networks of individuals. We will use these models to understand how network structure influences the likelihood of a disease outbreak, and how we can take advantage of network structure to reduce this likelihood. 
+
+## Random Graphs
+
+We will model social networks using *graphs* that consist of a finite collection $V$ of *vertices* (e.g. individuals) numbered $1,2,\dots,n$  and a finite collection $E$ of *edges* (e.g. pairs of individuals that interact) which consist of pairs of vertices i.e.  $(a_1,b_1),(a_2,b_2),\dots...$ where $a_i,b_i\in \{1,\dots,N\}$. In R, we can work with graphs using the igraph package:
+
+```{r}
+library(igraph)
+```
+
+One simple type of graph is a ring graph e.g. a ring of friends. For a ring graph with $n$ vertices, we have the edges are given by $(1,2),(2,3),\dots,(n-1,n),(n,1)$. We can create and plot a ring graph as follows: 
+
+```{r}
+g=make_ring(n=20)
+g$layout=layout.circle
+plot(g)
+```
+
+Alternatively, we could have all $n=20$ individuals know each other ($(i,j)$ is an edge for every $i\neq j$) in which case we have a *fully connected* graph. 
+
+```{r}
+g=make_full_graph(n=20)
+g$layout=layout.circle
+plot(g)
+```
+
+We can also create graphs randomly by having a probabilistic rule that determines whether any pair of vertices has an edge connecting them. The most classic example of a random graph is Erdos-Renyi graph in which each possible edge occurs with probability $p$. 
+
+```{r}
+g=erdos.renyi.game(n=20,p=0.3)
+g$layout=layout.circle
+plot(g)
+```
+
+A more recent random graph is the "small-world" graphs introduced by Duncan Watts and Steven Strogatz. The simplest version of these graphs ($1$-dimensional) correspond to rewiring (with probability $p$) edges in a circular graph where individuals are connected to their nearest $k$ neighbors. 
+
+```{r}
+g=watts.strogatz.game(dim=1,size=50,nei=1,p=0.1)
+g$layout=layout.circle
+plot(g,vertex.size=5,vertex.color="green",vertex.label=NA)
+```
+
+From a disease spread perspective, a key quantity associated with the vertices of these graphs is the *degree of a vertex*--the number of edges eminating from the vertex. Biologically, the degree of an vertex corresponds to the number of individuals this individual might infect if they were infected. For example, **what are the degree of vertices in the circle graph? the fully connected graph? what is the expected degree of a vertex in an Erdos-Renyi graph? the watts-strogatz graph from above?** 
+
+**Answers:** degree of all vertices is $2$ in the circle graph, and $n-1$ in the full connected graph. The expected degree of any vertex in the Erdos-Renyi graph is $p(n-1)$, and $2\times k$* in the Watts-Strogatz graph. 
+
+If we know the degree of every vertex, then we also know the *degree distribution*: the probability distribution $p_0,p_1,\dots,p_{n-1}$ where $p_i$ is the fraction of vertices with degree $i$. The degree distributions for the circle and full connected graphs are quite uninteresting i.e. $p_2=1$ and $p_i=0$ for $i\neq 2$ in the circle graph, and $p_{n-1}=1$ and $p_i=0$ for $i\neq n-1$ in the full connected graph. In our random graphs, however, the degree distribution are (with probability one) more interesting. We can compute them directly using the degree.distribution command from the igraph package. For example,
+
+```{r}
+g=erdos.renyi.game(n=100,p=0.3)
+barplot(degree.distribution(g))
+```
+
+Two important statistics associated with the degree distribution are its mean and variance. The mean, as we have discussed before, is given by 
+\[
+M=p_1+2p_2+3p_3+\dots (n-1)p_{n-1}
+\]
+$M$ corresponds to the expected number of individuals a randomly choosen individual could infect if they were infected. The variance, on the other hand, describes how much variation there is around the mean and is given by 
+\[
+V=p_0(M-0)^2+p_1(M-1)^2+p_2(M-2)^2+\dots p_{n-1}(M-n+1)^2
+\]
+**What is the mean and variance of the degree distribution for the ring graph? What is it for a realization of an Erdos-Renyi graph with $n=1000$ vertices and $p=2/n$?**
+
+**Answer:** For the ring graph, $M=2$ and $V=0$. For a realization of the Erdos-Renyi graph we get 
+```{r}
+g=erdos.renyi.game(n=1000,p=2/1000)
+M=mean(degree(g))
+M
+V=mean((degree(g)-M)^2)
+V
+```
+
+So we get a mean and variance of about $2$. Indeed, one can prove mathematically, that for an Erdos-Renyi graph with $p=k/n$, the mean and variance approach $k$ as $n\to \infty$ with probability one. Kinda cool! 
+
+
+## Disease dynamics on graphs
+
+Now lets imagine that our graph consists of individuals that can be in one of three states: susceptible, infected, or removed. At each time step, each infected individual infects any susceptoble individual they are connected to with probability $q$, and then becomes a removed indivivual. Repeating this dynamic leads to a stochastic process on the graph that ultimates halts when there are no more infected individuals on the graph. The following code can be used to simulate the dynamics. The input for this function is 
+
+g - a graph
+q - the probability an infected individual infects a neighbor
+case.zero - which individual is initially infected
+control - which subset of individuals are vaccinated
+plot.method - 1 fruchterman.reingold, 2 circle (default)
+size - size of the plotted vertices (default 10)
+
+**Note:** The code produces an animation which you can only see if you run it on $R$ directly. In this document, you will only see the final state of the graph and the dynamics of susceptible and infected as a fuction of disease generations. 
+
+```{r}
+outbreak=function(g,q=0.75,case.zero=1,control=c(),plot.method=2,size=10){
+	A=as.matrix(get.adjacency(g))
+	n=dim(A)[1]
+	
+	# initial states of all individuals:
+	# 0 susceptible, 1 infected, 2 recovered
+	s="green"
+	i="red"
+	r="black"
+	States=matrix(s,n,1)
+	States[case.zero]=i
+	States[control]=r
+
+	# probability of infecting your neighbor
+	p.infect=q
+
+	# number of individuals in each class 
+	I=c(1)
+	R=c(length(control))
+	S=c(n-I-R)	
+	All=States
+	
+		
+	
+	while(length(which(States==i))>0){
+		who=which(States==i)
+		if(length(who)>0){
+			for(q in 1:length(who)){
+			friends=which(A[who[q],]==1)
+			susceptible=which(States[friends]==s)
+			k=length(susceptible)
+			if(k>0){
+				change=rbinom(k,1,p.infect)
+				States[friends[susceptible[which(change==1)]]]=i				
+			}
+		}
+	States[who]=r
+	}
+	I=c(I,length(which(States==i)))	
+	S=c(S,length(which(States==s)))
+	All=cbind(All,States)
+	}
+
+	T=dim(All)[2]
+	g=graph.adjacency(A,mode="undirected")
+	V(g)$color=All[,1]
+	if(plot.method==1){
+		g$layout=layout.fruchterman.reingold
+		L=layout.fruchterman.reingold(g)
+		}
+	if(plot.method==2){
+		g$layout=layout.circle
+		L=layout.circle(g)
+	}
+		B=plot.igraph(g,vertex.label=NA,vertex.size=size,layout=L)
+		for(t in 1:T){
+		g2=graph.adjacency(matrix(0,100,100),mode="undirected")
+		V(g2)$color=All[,t]
+		g2$layout=g$layout
+        plot(g2,vertex.label=NA,add=TRUE,vertex.size=size,edge.width=0,layout=L)
+	 	Sys.sleep(0.5)
+		}
+	
+	#cat("\n","Enter 1 to plot time series:")	
+	#y=scan(n=1,quiet=TRUE)
+	y=1
+	if(y==1){
+	par(cex.lab=1.5,cex.axis=1.5)
+	plot(100*S/n,type="b",bg="green",lwd=3,pch=21,cex=2,ylim=c(0,100),xlab="generations",ylab="percentage")
+	points(100*I/n,type="b",bg="red",lwd=3,pch=21,cex=2)
+	legend("topright",c("susceptible","infected"),pch=21,pt.bg=c("green","red"),bty="n",cex=1.5)
+	}
+	
+
+}
+```
+
+**Run outbreaks for a ring graph with 50 individuals and $p=0.9$, and a Erdos-Renyi graph $n=50$, $p=2/50$, and $p=0.9$. Compare what you find with your neighbors and discuss.**
+
+```{r}
+g1=make_ring(50)
+outbreak(g=g1,q=0.9)
+```
+
+```{r}
+g2=erdos.renyi.game(50,2/50)
+outbreak(g2,q=0.9)
+```
+
+**Answer:** In the ring graph, the disease sometimes propagates along the ring but usually dies out early. In the random graph, the disease sometimes gives rise to large outbreaks and sometimes dies out. 
+
+*What is going on?* Lets try to identify $R_0$ for these dynamics. It is tempting to simply define it as the expected number of friends of a randomly choosen individual times the probability of transmitting to each friend i.e. $qM$. However, this turns out not to be appropriate for two reasons. First, for all but the first infected individual, infected individuals were infected by someone else in the network and they con not reinfect them. This would suggest that we might want to use $a(M-1)$ for $R_0$. Turns out this isn't quite right either as individuals with many friends are more likely to get infected than individuals with few friends. And these individuals once infected will infect many others. With this in mind, we might ask for a randomly infected individual how many others do we expect them to infect in a largely susceptible population? **How might you compute this quantity?**
+
+**Answer:** All else being equal, individuals with degree $k$ are $k$ times more likely to get infected than individuals with degree $1$. More generally, the degree of an infected individual is proportional to $k$. As the total number of degree $k$ individuals is proportional to $p_k$, we get that the probability of an infected individual being degree $k$ is propostional to $kp_k$. What is the proportionality constant? Well, we need the sumof these numbers to be one. Hence, it is $M=\sum_k k p_k$. The expected number of individuals a degree individual will infect is $p(k-1)$. Hence, we might define $R_0$ as 
+\[
+R_0=\sum \frac{k p_k}{M}q(k-1)=qM(1+V/M^2)-q
+\]
+So we get something close to $q(M-1)$ but there is an extra term $qV/M^2$. This term $V/M^2$ correspnds to the squared *coefficient of variation* where the *coefficient of variation* measures the variation around the mean relative to the mean. Hence, variation in degree can increase the $R_0$ associated with a graph.
+
+Use the following R command to compute $R_0$ for the two graphs that we simulated the disease dynamics on. **What do you find?**
+
+```{r}
+R0=function(g,q){
+  d=degree(g)
+	v=d/sum(d)
+	R0=q*(sum(v*d)-1)
+	return(R0)
+}
+```
+
+**Answer:** 
+
+```{r}
+R0(g1,0.9)
+R0(g2,0.9)
+```
+
+Hence, even though the (expected) means for both of these graphs is $2$, the $R_0$ is much larger in the random graph due to the variation in the degree. This variation is allowing for the outbreaks that we see in these random graphs. 
+
+Now suppose we wanted to prevent future outbreak in the random graph but only could vaccinate, say 20%, of the individuals. **If we vaccinated the individuals randomly, what would $R_0$ become for your graph? How might we vaccinate more effectively?**
+
+**Answer** If we just vacinnate randomly, then we would expect a 20% reduction in $R_0$. 
 
 
 
+
+
+To see whether this is what happens in practice, we can randomly remove 10 nodes for 100 trials, compute $R_0$ and take the average. 
+```{r}
+reps=100
+R0s=numeric(reps)
+for(i in 1:reps){
+  remove=sample(1:50,size = 10,replace=FALSE)
+  R0s[i]=R0(degree(g2),0.9,control=remove)
+}
+mean(R0s)
+```
