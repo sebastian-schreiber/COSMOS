@@ -1,0 +1,192 @@
+---
+title: "Evolutionary Game Theory"
+author: "Sebastian J. Schreiber"
+date: "July 11, 2016"
+output: html_document
+runtime: shiny
+---
+
+These notes are the basis of the lectures that I give as part of the "Mathematical Modeling of Biological Systems" Cluster of the <a href="cosmos.ucdavis.edu">UC Davis COSMOS program.</a> The COSMOS program is a four week in residence program for high school students which introduces students to more advanced topics in mathematics and sciences. Our cluster, which  is currently run by Andrew Sornberger, Bob Guy, and myself, introduces students to research at the interface of mathematics and biology. My lectures cover evolutionary game theory, population dynamics and life history evolution in stochastic environments, and disease dynamics. This "page" covers the evolutionary game lectures. 
+
+
+# Introduction
+
+Populations of organisms, whether they be plants, animals, or viruses, consist of individuals with different genotypes - the blueprint inherited from their parents which, along with their environment, determines their behavior, physiology, and morphology. At any point in time, individuals of one of these genotypes may be better at dealing with the current environment and, consequently, live longer and produce more offspring than individuals with other genotypes. When this occurs, this more "fit" genotype will increase in frequency relative to the other genotypes. This combination of offspring inheriting their parental genotypes and survival of the fittest is the basis of evolution by natural selection as described by Charles Darwin at the end of the 19th century. This simple, yet profound principle has provided exceptionally useful in understanding the origins of diversity, helping us combat diseases, and produce food more efficiently. 
+
+Evolutionary games provide a simple framework to mathematically encode key element of evolution by natural selection. This framework allows one to tackle a variety of fundamental biological questions such as: If natural selection favors more "fit" individuals, how does non-aggressive behavior and, more strikingly, altruistic behavior evolve? Why do many species produce equal ratios of sons and daughters? Why do males and females look so different in some species and not others?  In these lecture notes, I will introduce the fundamentals of evolutionary game theory and its applications to some of these questions and as well as other questions. 
+
+
+
+# Static Games
+
+Even though evolution by natural selection is a dynamic process, we will begin by examining static games which provide the historical context for discussing dynamic games. These games envision two players that interact by each playing one of a finite number of strategies. The outcome of these interactions provide a payoff to each player which contribute to an individual's lifetime reproductive success. To start the discussion, we consider a classic game which involves a contest between two humans. 
+
+**The Prisoner's Dilemna:** Envision that you and a friend have committed a major crime (e.g. breaking into an NSA server) and have been arrested. If convicted of this crime, you will spend $15$ years in prison. Fortunately for you, the police have only sufficient evidence to convict either of you of a much lesser crime (e.g. stealing computer components from a local electronics store) for which you would only spend $5$ years in prison. In the hope to extract a confession from one of you, the police have placed you in separate interrogation rooms. In each room, they make the following offer "If you provide evidence against your partner on the robbery but your partner does not provide evidence against you, you will be only charged with the lesser crime with a reduced sentence ($2$ years) and your partner will do the time for the major crime. If you both provide evidence against each other, you will be convicted of the major crime but with a reduced sentence ($10$ years)."  **What do you do?** 
+
+**Note to instructor:** To make this part of the lecture more interactive, identify two students in the class as the guilty parties and ask one to step in the hallway and the other to remain in the classroom. Then play out the scenario and have the students answer the questions without the formal set-up discussed below. 
+
+One approach to answering this question is treat the problem as a *two player* (you and your partner), *symmetric* (you are both offered the same deal) *game*. As you have one of two choices, *defect* on your partner or *cooperate* with your partner, the game is a *two strategy* game. Associated with each pair of strategies played by you and your partner is a *payoff* for each you i.e. how much you gain or lose when this pair of strategies is played. In the case of our prisoner's dilemma, if you and your partner cooperate (i.e. don't rat one another out), each of you "only" lose $5$ years of their life; the payoff to each of you is $-5$. Alternatively, if both of you defect, each you gets convicted of the major crime with a reduced sentence and get payoffs of $-10$. Finally, if one defects and the other cooperates, the defector gets a payoff of $-2$ and the cooperator gets a payoff of $-15$. 
+
+We can summarize this information in a *payoff matrix* as follows:
+
+ ||Cooperate|Defect
+---|---------|------
+Cooperate|-5|-15
+Defect|-2|-10
+
+where rows correspond to the strategies of the focal player and columns correspond to the strategies of the opponent. 
+
+**If you want to maximize your payoff (i.e. years of prison free life), what is the best strategy if your opponent defects? cooperates?** Clearly, in both cases, the best strategy is to defect. Hence, the *prisoner's dilemma*: no matter what your partner does, it is best to defect against them, and if both defect, you go to jail for a fairly long time. The prisoner's dilemna arises in a many contexts. John von Neumann viewed arms races (e.g. proliferation of nuclear weapons during the Cold War) as an example of the prisoner's dilemna: cooperating would be a country *not* producing more weapons, while defecting would be producing more weapons. Famously, regarding nuclear proliferation and whether one country should be the first to perform a nuclear strike on the other, John von Neumann stated: 
+
+>With the Russians it is not a question of whether but of when…If you say why not bomb them tomorrow, I say why not today? If you say today at 5 o'clock, I say why not one o'clock?
+
+The free-rider problem from economics where all individuals benefit from a public good (e.g. a transportation system, a union, defense from state military forces) reliant on contributions from individuals (e.g. paying for the bus ride, union dues, taxes). Defection corresponds not to making the contributions. 
+
+**Instructor Note:** I like to play the clip from the movie *Dr.Strangelove* where the U.S. president (Peter Sellers) and his miltary advisors (including George C. Scott) just found out about Russia's doomsday device and Dr. Strangelove (also Peter Sellers) explains the rationale behind the doomsday device. Dr. Strangelove is believed to be unflattering caricature of John von Neumann. 
+
+
+We can generalize the Prisoner's dilemma by allowing for arbitrary pay-offs. Say there are two strategies, strategy $1$ and strategy $2$. Let $a_{11}$ be the payoff to an individual playing strategy $1$ against an individual playing strategy $1$, $a_{12}$ be the payoff to an individual playing strategy $1$ against an individual playing strategy $2$, $a_{21}$ be the payoff to an individual playing strategy $2$ against an individual playing strategy $1$, etc. Then the payoff matrix becomes  
+
+ ||Strategy $1$|Strategy $2$
+---|---------|------
+Strategy $1$|$a_{11}$|$a_{12}$
+Strategy $2$|$a_{21}$|$a_{22}$
+
+In the case of the prisoner's dilemma, we had $a_{11}=-5$, $a_{12}=-15$,$a_{21}=-2$, and $a_{22}=-10$. In this game, there was a strategy (defect) which always performed better than the other strategy. We call such a strategy, a *dominant strategy*. More generally, strategy $2$ (respectively $1$) is a *dominant* strategy if $a_{21}>a_{11}$ and $a_{22}>a_{12}$ (respectively $a_{21}<a_{11}$ and $a_{22}<a_{12}$).
+
+Do all games have a dominant strategy? To answer this question, lets consider  the **hawk-dove** game. 
+
+### the Hawk-Dove game
+
+The hawk dove game was introduced by John Maynard-Smith to study the evolution of aggression in animal contests. About this game, Richard Dawkins wrote (*Selfish Gene* 1976): 
+
+>Survival machines of the same species tend to impinge on each others'
+lives more directly. This is for many reasons. One is that half the
+population of one's own species may be potential mates, and potentially
+hard-working and exploitable parents to one's children. Another reason
+is that members of the same species, being very similar to each other,being machines for preserving genes in the same kind of place, with the same kind of way of life, are particularly direct competitors for all the resources necessary for life. To a blackbird, a mole may be a competitor, but it is not nearly so important a competitor as another blackbird. Moles and blackbirds may compete for worms, but blackbirds and blackbirds compete with each other for worms and for everything else...The logical policy for a survival machine might therefore seem to be to murder its rivals, and then, preferably, to eat them. Although murder and cannibalism do occur in nature, they are not as common as a naive interpretation of the selfish gene theory might predict. Indeed Konrad Lorenz, in *On Aggression*, stresses the restrained and gentlemanly nature of animal fighting. For him the notable thing about animal fights is that they are formal tournaments, played according to rules like those of boxing or fencing. Animals fight with gloved fists and blunted foils. Threat and bluff take the place of deadly earnest. Gestures of surrender are recognized by victors, who then refrain from dealing the killing blow or bite that our naive theory might predict...Why is it that animals do not go all out to kill rival members of their species at every possible opportunity?
+
+To resolve this apparent paradox, we consider describe a particular instance of Maynard Smith's hawk-dove game. In this game, imagine that individuals engage in contests over a limiting resource e.g. a potential mate, food, shelter. Lets say  receiving this resource will increase one's offspring production by $2$ offspring. Individuals can play one of two strategies, hawk or dove. Hawk strategists always escalate the interaction until getting hurt or winning the entire resource. If one gets hurt, offspring production is reduced by $3$. Dove strategists run when there is an escalation and otherwise share the resource. **What is the payoff matrix for this game?**
+
+ ||Dove|Hawk
+---|---------|------
+Dove|$1$|$0$
+Hawk|$2$|$\frac{2-3}{2}=-\frac{1}{2}$
+
+where the payoff from the hawk-hawk interaction corresponds to the average outcome: winning half of the time, losing half of the time. 
+
+**Does this game have a dominant strategy? If not, why not?** Well, if your opponent plays dove, the best strategy is to play hawk. Alternatively, if your opponent plays hawk, the best strategy is to play dove. However, as you won't know what your opponent plays in advance, is there any notion of a "best strategy" for this game? 
+
+To answer this question, we need to introduce a larger class of strategies, so-called *mixed strategies*. Mixed strategies are probabilistic strategies in which an individual plays one strategy with some likelihood and the other strategy with the complementary likelihood. For example, my opponent might roll a six-sided die to determine their strategy: playing dove if they get $1$, and hawk otherwise. 
+
+**Instructor note:** Before moving onto the R code, it is fun to defined the studnets into two groups: pure hawk strategists, and pure dove strategists. Each person in the room gets to play against an opponent playing a mixed strategy (e.g. 1/6th hawk as below) a certain number of times by rolling a large die (or virtual die). Pay-offs are hypothetically multiples of ten dollars. All the payouts are tabulated by each team to see which team won more. You can even have the guess which time is going to win more. Dividing the total earnings by the number of plays per team provides an empirical estimate of the expected pay-off. 
+
+The outcome of playing the game once against this opponent is stochastic as it depends on the roll of the die. For example, suppose I choose to play dove. There is a $1/6$ chance that I get a reward of $+1$ and a $5/6$ chance that I get no reward. Now suppose I played the game many times against this opponent. **What does the average payoff look like?** Recall, the average of a set of numbers, say $x_1,...,x_n$, is given by dividing their sum by the number of numbers i.e. $\frac{x_1+\dots+x_n}{n}$. Using the computational package R, we can simulate playing this game against the mixed strategist $n$ times and compute the average payoff. 
+
+```{r}
+n=10 # number of times playing as dove
+outcomes=sample(x = 1:6,size = n,replace = TRUE) # roll the die n times 
+payoffs=(outcomes==1)*1+(outcomes>1)*0  #payoff of 1 when opponent plays dove, 0 otherwise
+mean(payoffs)
+```
+
+**Try running this several times for $n=5,10,100,1000,10000,100000$. What do you notice?** As $n$ gets larger, there is less variation in the mean payoff across runs, and the mean payoff appears to stabilize around the value $1/6$. **What does this $1/6$ represent?** Well, if we play dove many times against our opponent, roughly $1/6$ of time we get a payoff of $1$ and $5/6$ of the time we get a payoff of $0$. Hence, we expect a payoff of 
+\[
+\frac{1}{6}\times 1 + \frac{5}{6}\times 0 = \frac{1}{6}
+\]
+This quantity is called *the expected payoff* of this dove strategy against the $\frac{1}{6}$ strategist. One can visualize the convergence to the expected payoff by plotting the average payoff as a function of the number of games:
+```{r,fig.width=6,fig.height=4}
+n=100 # number of times playing as dove
+outcomes=sample(x = 1:6,size = n,replace = TRUE) # roll the die n times 
+payoffs=(outcomes==1)*1+(outcomes>1)*0  #payoff of 1 when opponent plays dove, 0 otherwise
+plot(1:n,cumsum(payoffs)/1:n,typ="l",bty="n",lwd=3,xlab="number of games",ylab="mean payoff",ylim=c(0,0.5))
+abline(h=1/6,col="red")
+```
+
+**What is the expected payoff if I play hawk?** Simply,
+\[
+\frac{1}{6}\times 2+ \frac{5}{6}\times\left(-\frac{1}{2}\right)=-\frac{1}{12}
+\]
+as you can verify numerically by playing a 10,000 times against the computer using the code below:
+
+```{r,fig.width=6,fig.height=4}
+n=10000 # number of times playing as hawk
+outcomes=sample(x = 1:6,size = n,replace = TRUE) # roll the die n times 
+payoffs=(outcomes==1)*2+(outcomes>1)*(-0.5)  #payoff of 2 when opponent plays dove, -0.5 otherwise
+plot(1:n,cumsum(payoffs)/1:n,typ="l",bty="n",lwd=3,xlab="number of games",ylab="mean payoff",ylim=c(-0.5,0.25))
+abline(h=-1/12,col="red")
+```
+
+
+Despite playing $10,000$ times, we didn't precisely get $-\frac{1}{12}$. This is to be expected as we didn't play an infinite number of times. How likely our particular outcome was can be estimated using the *Central Limit Theorem* (check it out on Wikipedia)
+
+More generally, if our opponent plays strategy $1$ with probability $x$ and strategy $2$ with probability $1-x$, then my expected payoff playing as strategy $1$ is 
+\[
+p_1(x)=x a_{11}+(1-x)a_{12}
+\]
+and my expected payoff playing as strategy $2$ is 
+\[
+p_2(x)=x a_{21}+(1-x)a_{22}
+\]
+**What are these in terms of the hawk-dove game?** Simply, 
+\[
+p_1(x)=x\times 1+(1-x)\times 0 = x
+\]
+and 
+\[
+p_2(x)=x \times 2 + (1-x)\times (-1/2)=\frac{5}{2}x-\frac{1}{2}
+\]
+
+Now suppose, your opponent plays dove with probability $x$ but you play dove with probability $y$. **What is your expected payofff?** When you play dove, you get $p_1(x)$, otherwise $p_2(x)$. As you plays dove a fraction $y$ of the time and hawk otherwise, the expected payoff is 
+\[
+p(x,y)=\mbox{payoff playing $y$ against $x$}=
+yp_1(x)+(1-y)p_2(x)
+\]
+
+To make sure you "get" this definition, **what is expected payoff when you play dove one-half of the time and your opponnent plays dove one-sixth of the time?** We have $p_1(1/6)=1/6$ and $p_2(1/6)=-1/12$ from our earlier calculations. As $y=1/2$, we get
+\[
+p(1/6,1/2)=\frac{1}{2}\times \frac{1}{6}+\frac{1}{2}\frac{-1}{12}=\frac{1}{24}
+\]
+Try simulating the interaction below for large $n$ to see numerical support for our calculations. Recall that $1/24=0.041666...$
+
+```{r}
+n=10000 # number of times playing against the dove
+outcomes1=sample(x = 1:6,size = n,replace = TRUE)
+outcomes2=sample(x = 1:6,size = n,replace = TRUE)
+payoffs=(outcomes1==1&outcomes2<4)*1+(outcomes1==1&outcomes2>3)*2+(outcomes1>1&outcomes2<4)*0+(outcomes1>1&outcomes2>3)*(-0.5)
+mean(payoffs)
+```
+
+##Nash equilibria
+
+OK. So have a bunch of new strategies...but is one of them the "best"?  In his Nobel prize winning work, John Nash introduced a concept of a "best" strategy and showed such a strategy always exists for finite player, finite strategy games. **Instructor note:** Show clips from <a href="https://en.wikipedia.org/wiki/A_Beautiful_Mind_(film)">A Beautiful Mind</a>
+
+**Definition** A strategy $x$ is a *Nash equilibrium* if $p(x,x)\ge p(x,y)$ for all $y$ in $[0,1]$. In words, your opponent's strategy is a Nash equilibrium if one can not get a larger payoff playing any other strategy against them. While, as we shall soon seen, this definition isn't completely satisfying for characterizing evolutionary end points or "best" strategies, this condition certainly seems like a necessary condition for strategies corresponding to evolutionary end points.  
+
+How can we find such a strategy? Notice that  $p(x,y)$ is a linear function of $y$. Hence, if $0<x<1$ is a Nash equilibrium, then $p(x,y)$ as a function $y$ must be constant else either $x<y$ or $x>y$ yields a higher payoff $p(x,y)$ than $p(x,x)$. But, this is only possible if $p_1(x)=p_2(x)$. Thus we have shown *A mixed strategy $0<x<1$ is a Nash equilibrium if and only if $p_1(x)=p_2(x)$.* Alternatively,  a "pure" strategy $x=0$ or $x=1$ is a Nash equilibrium if playing the other strategy against it doesn't lead to a higher payoff. **Check this yourself!**
+
+**What are the Nash equilibria for the Hawk-Game?** We have already seen that the pure strategies are not Nash equilibria (i.e. playing the other strategy leads to a higher payoff). Any mixed Nash equilibrium must satisfy $p_1(x)=p_2(x)$ which yields $x=(5/2)x-1/2$ i.e. $x=1/3$. Playing dove one-third of the time yields an unbeatable strategy. The expected payoff when both players play this strategy is $p_1(1/3)=1/3$. Hence, the "optimal" strategy involves a mixture of aggression and passive behavior. But is this always the case? When is it "better" to exhibit less aggression? 
+
+To answer the preceding questions, we can generalize the hawk-dove game by letting $V$ (for victory) denote the value of the resource and $C$ (for cost) denote the value of the cost. The hawk-dove payoff matrix becomes: 
+
+||Dove|Hawk
+---|---------|------
+Dove|$V/2$|$0$
+Hawk|$V$|$\frac{V-C}{2}$
+
+**Try answering the following questions by solving the Nash equilibria:**
+
+1. Under what conditions is there a pure Nash equilibrium? 
+2. When does the Nash equilibrium correspond to less aggressive behavior? 
+
+**Answers:** 
+
+1. If $V\ge C$, then hawk is a dominant strategy. In particular, pure hawk is a Nash equilibrium. If $V<C$, then there is no pure Nash equilibrium. In particular, being purely dove is never the "best" strategy. 
+
+2. If $C>V$, then there is only one Nash equilibrium given by 
+\[
+1-\frac{V}{C}
+\]
+Hence, the Nash equilibrium corresponds to less aggressive behavior for larger cost to victory ratios. 
+
+
